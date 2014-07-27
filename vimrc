@@ -3,6 +3,16 @@ if filereadable(expand("~/.vim/autoload/pathogen.vim"))
 	execute pathogen#infect()
 endif
 
+autocmd VimEnter * :call Setup()
+
+function Setup()
+	
+	if exists('g:loaded_airline')
+		set noshowmode
+	endif
+
+endfunction
+
 filetype plugin on 
 
 " Enable syntax highlighting
@@ -41,7 +51,6 @@ set showmatch
 set scrolloff=1000
 set visualbell
 set number
-set noshowmode " might want to get rid of that without airline
 set splitbelow
 set splitright
 
