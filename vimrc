@@ -4,6 +4,7 @@ if filereadable(expand("~/.vim/autoload/pathogen.vim"))
 endif
 
 autocmd VimEnter * :call Setup()
+au BufWinEnter *.php setlocal matchpairs-=<:> " Stop terminal bells when typing -> 
 
 function Setup()
 	
@@ -41,6 +42,7 @@ set smartindent
 set tabstop=4		" Tabs are 4 columns wide
 set shiftwidth=4	" Text indented by 4 columns when using indent operations
 set softtabstop=4	" Tab in insert mode is 4 columns
+set tw=0			" No auto line wrapping
 
 " Environment
 
@@ -70,6 +72,7 @@ nmap <Leader>t :NERDTreeTabsToggle<CR>
 nmap <Leader>e :CtrlP<CR>
 nmap <Leader>o :TlistToggle<CR>
 nmap <Leader>ws :vsplit<CR><Leader>wl
+nmap <Leader>ss :SSave<CR>
 
 " Make j & k move between screen rows instead of lines
 
