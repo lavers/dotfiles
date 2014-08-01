@@ -59,7 +59,7 @@ set splitright
 " KEY MAPPINGS
 " -------------------------------------------------------------
 
-inoremap kj <Esc> 
+inoremap kj <Esc>
 
 let mapleader = "\\"
 
