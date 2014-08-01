@@ -73,6 +73,8 @@ nmap <Leader>e :CtrlP<CR>
 nmap <Leader>o :TlistToggle<CR>
 nmap <Leader>ws :vsplit<CR><Leader>wl
 nmap <Leader>ss :SSave<CR>
+nmap <Leader>no o<Esc>k
+nmap <Leader>nO O<Esc>j
 
 " Make j & k move between screen rows instead of lines
 
