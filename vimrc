@@ -6,7 +6,7 @@ endif
 autocmd VimEnter * :call Setup()
 au BufWinEnter *.php setlocal matchpairs-=<:> " Stop terminal bells when typing -> 
 
-function Setup()
+function! Setup()
 	
 	if exists('g:loaded_airline')
 		set noshowmode
