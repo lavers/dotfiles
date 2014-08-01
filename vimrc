@@ -79,6 +79,9 @@ nmap <Leader>ss :SSave<CR>
 nmap j gj
 nmap k gk
 
+" For when you forget sudo
+
+cmap w!! w !sudo tee > /dev/null %
 
 " Add \v to search by default, essentially makes perl style regex default
 
