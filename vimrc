@@ -75,6 +75,9 @@ nmap <Leader>ws :vsplit<CR><Leader>wl
 nmap <Leader>ss :SSave<CR><CR>y<CR>
 nmap <Leader>no o<Esc>k
 nmap <Leader>nO O<Esc>j
+nmap <Leader>ns O<Esc>jo<Esc>k
+nmap <Leader>c :noh<CR>
+nmap <Leader>v :vsplit ~/.vimrc<CR>
 
 " Make j & k move between screen rows instead of lines
 
