@@ -70,9 +70,9 @@ nmap <Leader>ln :setlocal number<CR>
 nmap <Leader>lr :setlocal relativenumber<CR>
 nmap <Leader>t :NERDTreeTabsToggle<CR>
 nmap <Leader>e :CtrlP<CR>
-nmap <Leader>o :TlistToggle<CR>
+nmap <Leader>o :TlistToggle<CR><Leader>wh
 nmap <Leader>ws :vsplit<CR><Leader>wl
-nmap <Leader>ss :SSave<CR>
+nmap <Leader>ss :SSave<CR><CR>y<CR>
 nmap <Leader>no o<Esc>k
 nmap <Leader>nO O<Esc>j
 
