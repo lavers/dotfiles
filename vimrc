@@ -88,11 +88,6 @@ nmap k gk
 
 cmap w!! w !sudo tee > /dev/null %
 
-" Add \v to search by default, essentially makes perl style regex default
-
-nnoremap / /\v
-vnoremap / /\v
-
 " For Learning
 
 nnoremap <Up> <NOP>
