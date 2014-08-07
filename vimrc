@@ -3,8 +3,10 @@ if filereadable(expand("~/.vim/autoload/pathogen.vim"))
 	execute pathogen#infect()
 endif
 
-autocmd VimEnter * :call Setup()
-au BufWinEnter *.php setlocal matchpairs-=<:> " Stop terminal bells when typing -> 
+" AUTOCOMMANDS & FUNCTIONS
+" -------------------------------------------------------------
+
+" Setup function called when vim starts (can read g:loaded_ vars)
 
 function! Setup()
 	
@@ -13,6 +15,17 @@ function! Setup()
 	endif
 
 endfunction
+
+autocmd VimEnter * :call Setup()
+
+" Stop looking for a matching < when typing -> in php
+
+autocmd BufWinEnter *.php setlocal matchpairs-=<:>
+
+" GENERAL, ENVIRONMENT, TABS & SEARCH
+" -------------------------------------------------------------
+
+" Enable filetype detection
 
 filetype plugin on 
 
@@ -63,20 +76,41 @@ inoremap kj <Esc>
 
 let mapleader = "\\"
 
-" Leader key stuff
+" Because ctrl w is annoying
 
 nmap <Leader>w <C-w>
+
+" Split a window in half and move to the right window
+
+nmap <Leader>ws :vsplit<CR><Leader>wl
+
+" Toggling between relative and absolute line numbers
+
 nmap <Leader>ln :setlocal number<CR>
 nmap <Leader>lr :setlocal relativenumber<CR>
+
+" Opening plugin windows
+
 nmap <Leader>t :NERDTreeTabsToggle<CR>
 nmap <Leader>e :CtrlP<CR>
 nmap <Leader>o :TlistToggle<CR><Leader>wh
-nmap <Leader>ws :vsplit<CR><Leader>wl
+
+" Session saving (ONLY USE WHEN YOUVE ALREADY SET THE SESSION NAME)
+
 nmap <Leader>ss :SSave<CR><CR>y<CR>
+
+" Add a newline above/below/above&below (no insert mode)
+
 nmap <Leader>no o<Esc>k
 nmap <Leader>nO O<Esc>j
 nmap <Leader>ns O<Esc>jo<Esc>k
+
+" Clear highlighting from last search
+
 nmap <Leader>c :noh<CR>
+
+" Split the window and open ~/.vimrc on the right
+
 nmap <Leader>v :vsplit ~/.vimrc<CR>
 
 " Make j & k move between screen rows instead of lines
@@ -84,11 +118,11 @@ nmap <Leader>v :vsplit ~/.vimrc<CR>
 nmap j gj
 nmap k gk
 
-" For when you forget sudo
+" For when you forget to open with sudo
 
 cmap w!! w !sudo tee > /dev/null %
 
-" For Learning
+" For learning
 
 nnoremap <Up> <NOP>
 nnoremap <Down> <NOP>
