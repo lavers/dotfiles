@@ -97,7 +97,7 @@ nmap <Leader>o :TlistToggle<CR><Leader>wh
 
 " Session saving (ONLY USE WHEN YOUVE ALREADY SET THE SESSION NAME)
 
-nmap <Leader>ss :SSave<CR><CR>y<CR>
+nmap <Leader>ss :SSave<CR><CR>y
 
 " Add a newline above/below/above&below (no insert mode)
 
