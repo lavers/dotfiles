@@ -188,3 +188,8 @@ let g:airline_section_c = '%<%{airline#util#wrap(airline#parts#readonly(),0)}%f 
 let g:airline_section_y = ' %{airline#util#wrap(printf("%s : %s", &fenc, &ff),0)} '
 let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
 
+" GitGutter
+" ------------------------------------------------------------------------------
+
+highlight clear SignColumn
+
