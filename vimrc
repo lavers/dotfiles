@@ -33,6 +33,10 @@ filetype plugin on
 
 syntax on
 
+" Enable completion
+
+set omnifunc=syntaxcomplete#Complete
+
 " Similar filename completion to bash
 
 set wildmode=longest,list,full
@@ -93,7 +97,7 @@ nmap <Leader>lr :setlocal relativenumber<CR>
 
 nmap <Leader>t :NERDTreeTabsToggle<CR>
 nmap <Leader>e :CtrlP<CR>
-nmap <Leader>o :TlistToggle<CR><Leader>wh
+nmap <Leader>o :TlistToggle<CR>
 
 " Session saving (ONLY USE WHEN YOUVE ALREADY SET THE SESSION NAME)
 
@@ -192,4 +196,8 @@ let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
 " ------------------------------------------------------------------------------
 
 highlight clear SignColumn
+
+let Tlist_File_Fold_Auto_Close = 1
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_Sort_Type = "name"
 
