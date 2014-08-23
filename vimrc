@@ -33,6 +33,11 @@ filetype plugin on
 
 syntax on
 
+" Set colorscheme
+
+set background=dark
+silent! colorscheme molokai
+
 " Enable completion
 
 set omnifunc=syntaxcomplete#Complete
@@ -80,9 +85,10 @@ inoremap kj <Esc>
 
 let mapleader = "\\"
 
-" Because ctrl w is annoying
+" Because typing these is hard
 
 nmap <Leader>w <C-w>
+nmap <Leader>ww :vertical resize 
 
 " For quick easymotion activation
 
