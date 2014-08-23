@@ -84,6 +84,10 @@ let mapleader = "\\"
 
 nmap <Leader>w <C-w>
 
+" For quick easymotion activation
+
+nmap <Space> <Leader><Leader>
+
 " Split a window in half and move to the right window
 
 nmap <Leader>ws :vsplit<CR><Leader>wl
@@ -196,6 +200,9 @@ let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
 " ------------------------------------------------------------------------------
 
 highlight clear SignColumn
+
+" Taglist
+" ------------------------------------------------------------------------------
 
 let Tlist_File_Fold_Auto_Close = 1
 let Tlist_GainFocus_On_ToggleOpen = 1
