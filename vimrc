@@ -35,8 +35,11 @@ syntax on
 
 " Set colorscheme
 
-set background=dark
 silent! colorscheme molokai
+
+" Molokai uses a near-invisible select background for some reason
+
+highlight Visual ctermbg=240 
 
 " Enable completion
 
@@ -122,6 +125,10 @@ nmap <Leader>ns O<Esc>jo<Esc>k
 " Clear highlighting from last search
 
 nmap <Leader>c :noh<CR>
+
+" Toggle line wrapping
+
+nmap <Leader>r :set wrap! wrap?<CR>
 
 " Split the window and open ~/.vimrc on the right
 
