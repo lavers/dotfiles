@@ -6,6 +6,11 @@
 
 *.log
 
+# Vim swap files
+
+*.swp
+*.swo
+
 # OS Crap
 
 .DS_Store
