@@ -114,7 +114,7 @@ nmap <Leader>o :TlistToggle<CR>
 
 " Session saving (ONLY USE WHEN YOUVE ALREADY SET THE SESSION NAME)
 
-nmap <Leader>ss :SSave<CR><CR>y
+nmap <Leader>ss :NERDTreeClose<CR>:SSave<CR><CR>y
 
 " Add a newline above/below/above&below (no insert mode)
 
@@ -192,6 +192,7 @@ let g:startify_custom_header = [
 let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
 let NERDTreeMinimalUI = 1
+let NERDTreeIgnore = ['\.DS_Store$']
 
 " Airline
 " ------------------------------------------------------------------------------
