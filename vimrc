@@ -80,7 +80,14 @@ set visualbell
 set number
 set splitbelow
 set splitright
-set colorcolumn=100
+set hidden
+silent! set colorcolumn=100
+
+" COMMANDS
+" -------------------------------------------------------------
+
+command W w
+command Q q
 
 " KEY MAPPINGS
 " -------------------------------------------------------------
@@ -212,6 +219,8 @@ let g:airline_symbols.readonly = '🔒  '
 let g:airline_section_c = '%<%{airline#util#wrap(airline#parts#readonly(),0)}%f %m'
 let g:airline_section_y = ' %{airline#util#wrap(printf("%s : %s", &fenc, &ff),0)} '
 let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " GitGutter
 " ------------------------------------------------------------------------------
