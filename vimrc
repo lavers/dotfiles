@@ -81,6 +81,7 @@ set number
 set splitbelow
 set splitright
 set hidden
+silent! set colorcolumn=100
 
 " COMMANDS
 " -------------------------------------------------------------
@@ -199,7 +200,9 @@ let g:startify_custom_header = [
 let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
 let NERDTreeMinimalUI = 1
-let NERDTreeIgnore = ['\.DS_Store$']
+let NERDTreeIgnore = [
+	\ '\.\(DS_Store\|settings\|git\|buildpath\|project\|swp\|swo\)$',
+	\ ]
 
 " Airline
 " ------------------------------------------------------------------------------
