@@ -109,7 +109,7 @@ nmap <Leader>lr :setlocal relativenumber<CR>
 
 " Opening plugin windows
 
-nmap <Leader>t :NERDTreeTabsToggle<CR>
+nmap <Leader>t :NERDTreeToggle<CR>
 nmap <Leader>e :CtrlP<CR>
 nmap <Leader>o :TlistToggle<CR>
 
