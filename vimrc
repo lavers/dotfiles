@@ -78,6 +78,7 @@ set showmatch
 set scrolloff=1000
 set visualbell
 set number
+set relativenumber
 set splitbelow
 set splitright
 set hidden
@@ -86,8 +87,8 @@ silent! set colorcolumn=100
 " COMMANDS
 " -------------------------------------------------------------
 
-command W w
-command Q q
+command! W w
+command! Q q
 
 " KEY MAPPINGS
 " -------------------------------------------------------------
