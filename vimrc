@@ -48,6 +48,7 @@ highlight Visual ctermbg=240
 " Enable completion
 
 set omnifunc=syntaxcomplete#Complete
+set completeopt-=preview
 
 " Similar filename completion to bash
 
@@ -100,6 +101,8 @@ command! Q q
 inoremap kj <Esc>
 
 let mapleader = "\\"
+
+imap <C-C> <C-X><C-U>
 
 " Because typing these is hard
 
