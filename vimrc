@@ -22,6 +22,10 @@ autocmd VimEnter * :call Setup()
 
 autocmd BufWinEnter *.php setlocal matchpairs-=<:>
 
+" Add markdown extension
+
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
 " GENERAL, ENVIRONMENT, TABS & SEARCH
 " -------------------------------------------------------------
 
@@ -142,6 +146,10 @@ nmap <Leader>r :set wrap! wrap?<CR>
 " Split the window and open ~/.vimrc on the right
 
 nmap <Leader>v :vsplit ~/.vimrc<CR>
+
+" Compiling latex documents
+
+nmap <Leader>lc :!pdflatex %<CR>
 
 " Make j & k move between screen rows instead of lines
 
