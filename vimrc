@@ -179,6 +179,22 @@ inoremap <Down> <NOP>
 inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 
+" GVim Settings
+" -------------------------------------------------------------------------------
+
+set guifont=Consolas:h10:cANSI
+
+set guioptions-=T " No toolbar
+set guioptions-=r " No right scrollbar
+
+if has("gui_running")
+
+	" Bigger default window size
+	
+	set lines=40 columns=160
+
+endif
+
 " Startify
 " -------------------------------------------------------------------------------
 
