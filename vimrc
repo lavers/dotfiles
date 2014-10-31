@@ -104,6 +104,11 @@ let mapleader = "\\"
 
 imap <C-C> <C-X><C-U>
 
+" Maven stuff
+
+nmap <Leader>mc :Mvn compile<CR>
+nmap <Leader>jc :JavaCorrect<CR>
+
 " Because typing these is hard
 
 nmap <Leader>w <C-w>
