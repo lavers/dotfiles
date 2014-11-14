@@ -83,11 +83,14 @@ set showmatch
 set scrolloff=1000
 set visualbell
 set number
-set relativenumber
 set splitbelow
 set splitright
 set hidden
+
+" Vim 7.3+ options
+
 silent! set colorcolumn=100
+silent! set relativenumber
 
 " COMMANDS
 " -------------------------------------------------------------
