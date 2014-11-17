@@ -121,6 +121,11 @@ imap <C-C> <C-X><C-U>
 nmap <Leader>mc :Mvn compile<CR>
 nmap <Leader>jc :JavaCorrect<CR>
 
+" You will learn buffers
+
+nmap gt :bn<CR>
+nmap gT :bp<CR>
+
 " Because typing these is hard
 
 nmap <Leader>w <C-w>
