@@ -171,6 +171,10 @@ nmap <Leader>v :vsplit ~/.vimrc<CR>
 
 nmap <Leader>lc :!pdflatex %<CR>
 
+" System paste
+
+nmap <Leader>p "*p
+
 " Make j & k move between screen rows instead of lines
 
 nmap j gj
