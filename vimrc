@@ -118,7 +118,19 @@ imap <C-C> <C-X><C-U>
 
 " Maven stuff
 
+function! MavenRunCurrentClass()
+
+	let l:class = substitute(substitute(expand("%:r"), "\/", ".", "g"), "\\", ".", "g")
+
+	execute ":Mvn exec:java -Dexec.mainClass=".substitute(l:class, "src.main.java.", "", "")
+
+endfunction
+
 nmap <Leader>mc :Mvn compile<CR>
+nmap <Leader>mr :call MavenRunCurrentClass()<CR>
+
+" Eclim stuff
+
 nmap <Leader>jc :JavaCorrect<CR>
 
 " You will learn buffers
