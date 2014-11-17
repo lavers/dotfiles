@@ -26,6 +26,14 @@ autocmd BufWinEnter *.php setlocal matchpairs-=<:>
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
+" Vim tries to write to some random directory that doesnt exist by default
+
+if has("win32")
+
+	set directory=.,$TEMP
+
+endif
+
 " GENERAL, ENVIRONMENT, TABS & SEARCH
 " -------------------------------------------------------------
 
@@ -88,6 +96,10 @@ set splitbelow
 set splitright
 set hidden
 silent! set colorcolumn=100
+
+" Causes problems with syntastic on windows
+
+set noshellslash
 
 " COMMANDS
 " -------------------------------------------------------------
@@ -187,11 +199,14 @@ set guifont=Consolas:h10:cANSI
 set guioptions-=T " No toolbar
 set guioptions-=r " No right scrollbar
 
+set mouse="" " No mouse events
+
 if has("gui_running")
 
 	" Bigger default window size
 	
 	set lines=40 columns=160
+
 
 endif
 
