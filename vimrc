@@ -25,6 +25,7 @@ autocmd BufWinEnter *.php setlocal matchpairs-=<:>
 " Add markdown extension
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
 
 " Vim tries to write to some random directory that doesnt exist by default
 
@@ -136,11 +137,6 @@ nmap <Leader>mr :call MavenRunCurrentClass()<CR>
 
 nmap <Leader>jc :JavaCorrect<CR>
 
-" You will learn buffers
-
-nmap gt :bn<CR>
-nmap gT :bp<CR>
-
 " Because typing these is hard
 
 nmap <Leader>w <C-w>
@@ -163,6 +159,7 @@ nmap <Leader>lr :setlocal relativenumber<CR>
 
 nmap <Leader>t :NERDTreeToggle<CR>
 nmap <Leader>e :CtrlP<CR>
+nmap <Leader>b :CtrlPBuffer<CR>
 nmap <Leader>o :TlistToggle<CR>
 
 " Session saving (ONLY USE WHEN YOUVE ALREADY SET THE SESSION NAME)
