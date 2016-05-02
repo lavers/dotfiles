@@ -24,11 +24,12 @@ call plug#begin()
 
 " Color Schemes
 
-Plug 'tomasr/molokai'				" Color scheme
+Plug 'tomasr/molokai'
 
 " New Filetypes
 
 Plug 'tikhomirov/vim-glsl'	
+Plug 'cakebaker/scss-syntax.vim'
 
 " Behavior / Features
 
@@ -44,6 +45,7 @@ Plug 'easymotion/vim-easymotion'	" Quicker motions
 " Language Features / Autocompletion
 
 Plug 'scrooloose/syntastic'			" Syntax checking
+Plug 'vim-scripts/taglist.vim'		" Browser for functions/variables
 
 " System-specific Plugin File
 
@@ -200,6 +202,7 @@ nmap <Leader>lr :setlocal relativenumber<CR>
 
 nmap <Leader>e :CtrlP<CR>
 nmap <Leader>b :CtrlPBuffer<CR>
+nmap <Leader>t :TlistToggle<CR>
 
 " Session saving (ONLY USE WHEN YOUVE ALREADY SET THE SESSION NAME)
 
