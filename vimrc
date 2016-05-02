@@ -1,6 +1,22 @@
 set nocompatible
 
 "--------------------------------------------------------------
+" UTILITY FUNCTIONS
+"--------------------------------------------------------------
+
+function SourceIfExists(filename)
+
+	let l:expanded = expand(a:filename)
+
+	if filereadable(l:expanded)
+
+		execute 'source '.fnameescape(l:expanded)
+
+	endif
+
+endfunction
+
+"--------------------------------------------------------------
 " PLUGINS 
 "--------------------------------------------------------------
 
@@ -28,7 +44,10 @@ Plug 'easymotion/vim-easymotion'	" Quicker motions
 " Language Features / Autocompletion
 
 Plug 'scrooloose/syntastic'			" Syntax checking
-Plug 'Valloric/YouCompleteMe'		" Auto completion
+
+" System-specific Plugin File
+
+call SourceIfExists('~/.vim/system-plugins.vim')
 
 call plug#end()
 
@@ -137,16 +156,18 @@ silent! set relativenumber		" Relative line numbers
 
 set noshellslash
 
+"--------------------------------------------------------------
 " COMMANDS
-" -------------------------------------------------------------
+"--------------------------------------------------------------
 
 " Alias these because i keep mistyping them
 
 command! W w 
 command! Q q
 
+"--------------------------------------------------------------
 " KEY MAPPINGS
-" -------------------------------------------------------------
+"--------------------------------------------------------------
 
 inoremap kj <Esc>
 
@@ -236,8 +257,9 @@ nmap <Leader>mr :call MavenRunCurrentClass()<CR>
 
 nmap <Leader>jc :JavaCorrect<CR>
 
-" GVim Settings
-" -------------------------------------------------------------------------------
+"--------------------------------------------------------------
+" GVIM SETTINGS
+"--------------------------------------------------------------
 
 if has("gui_running")
 
@@ -253,8 +275,9 @@ if has("gui_running")
 
 endif
 
-" Startify
-" -------------------------------------------------------------------------------
+"--------------------------------------------------------------
+" STARTIFY
+"--------------------------------------------------------------
 
 let g:startify_session_persistence = 0
 let g:startify_change_to_vcs_root = 1
@@ -285,8 +308,9 @@ let g:startify_custom_header = [
 	\ '						   ',
 	\ ]
 
-" Airline
-" ------------------------------------------------------------------------------
+"--------------------------------------------------------------
+" AIRLINE
+"--------------------------------------------------------------
 
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
@@ -303,14 +327,22 @@ let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
-" GitGutter
-" ------------------------------------------------------------------------------
+"--------------------------------------------------------------
+" GITGUTTER
+"--------------------------------------------------------------
 
 highlight clear SignColumn
 
-" CtrlP
-" ------------------------------------------------------------------------------
+"--------------------------------------------------------------
+" CTRLP
+"--------------------------------------------------------------
 
 let g:ctrlp_custom_ignore = '_compile\|_upload'
 let g:ctrlp_switch_buffer = 'et'
+
+"--------------------------------------------------------------
+" SYSTEM-SPECIFIC VIMRC
+"--------------------------------------------------------------
+
+call SourceIfExists('~/.vim/system-vimrc.vim')
 
