@@ -4,7 +4,7 @@ set nocompatible
 " UTILITY FUNCTIONS
 "--------------------------------------------------------------
 
-function SourceIfExists(filename)
+function! SourceIfExists(filename)
 
 	let l:expanded = expand(a:filename)
 
@@ -78,6 +78,12 @@ autocmd BufWinEnter *.php setlocal matchpairs-=<:>
 " Add markdown extension
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd BufNewFile,BufReadPost *.zsh-theme set filetype=sh
+
+augroup AutoHideCursorLine
+	autocmd BufWinEnter,WinEnter * setlocal cursorline
+	autocmd WinLeave * setlocal nocursorline
+augroup END
 
 " Vim tries to write to some random directory that doesnt exist by default 
 
@@ -91,7 +97,7 @@ endif
 
 " Enable filetype detection
 
-filetype plugin indent on 
+filetype plugin on 
 
 " Enable syntax highlighting
 
@@ -107,7 +113,7 @@ highlight Visual ctermbg=240
 
 " Enable completion
 
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
 set completeopt-=preview
 
 " Similar filename completion to bash
@@ -139,8 +145,8 @@ set tw=0			" No auto line wrapping
 set ruler				" Show where the cursor is
 set laststatus=2		" Always show the status line
 set showcmd				" Show the command as its being typed
-set showmatch			
-set scrolloff=1000		" Keep the cursor centered in the screen
+set showmatch			" Show the matching bracket after closing a bracket
+set scrolloff=10		" Keep the cursor centered in the screen
 set sidescrolloff=5		" Only require 5 characters visible when side scrolling (stops huge jumps)
 set sidescroll=1		" Side scroll 1 character at a time 
 set visualbell			" No bloody beeping
@@ -148,6 +154,10 @@ set number				" Show line numbers
 set splitbelow			" Open new splits below rather than above
 set splitright			" Open splits right rather than left
 set hidden				" Hide buffers instead of closing them
+
+set cursorline			" Show the cursor line
+set breakindent			" Indent wrapped lines to the same level as the broken line
+set showbreak=>>		" Break indent indicator
 
 " Vim 7.3+ specific
 
@@ -157,6 +167,10 @@ silent! set relativenumber		" Relative line numbers
 " shellslash Causes problems with syntastic on windows
 
 set noshellslash
+
+" no bloody swap files littering the place
+
+set noswapfile
 
 "--------------------------------------------------------------
 " COMMANDS
@@ -179,6 +193,10 @@ let mapleader = "\\"
 
 nmap j gj
 nmap k gk
+
+nmap <Bar> :vsplit<CR>
+nmap _ :split<CR>
+nmap <Tab> <C-w>w
 
 " Because bending your little finger back is stupid
 
@@ -323,7 +341,7 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline_theme = 'airlineish'
-let g:airline_symbols.readonly = '🔒  '
+let g:airline_symbols.readonly = 'RO'
 let g:airline_section_c = '%<%{airline#util#wrap(airline#parts#readonly(),0)}%f %m'
 let g:airline_section_y = ' %{airline#util#wrap(printf("%s : %s", &fenc, &ff),0)} '
 let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
