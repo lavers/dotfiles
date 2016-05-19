@@ -11,6 +11,10 @@ alias please='sudo $(history -p \!\!)'
 
 export PS1="\[$(tput setaf 7)\]\[$(tput bold)\][\[$(tput setaf 5)\]\u@\h \[$(tput setaf 6)\]\w\[$(tput setaf 7)\]\[$(tput sgr0)\]]\\$ \[$(tput sgr0)\]"
 
+# Set vim as the default editor 
+
+export EDITOR='vim'
+
 # VIM Mode
 
 set -o vi
