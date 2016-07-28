@@ -16,6 +16,8 @@ function! SourceIfExists(filename)
 
 endfunction
 
+let html_no_rendering=1
+
 "--------------------------------------------------------------
 " PLUGINS 
 "--------------------------------------------------------------
@@ -41,6 +43,7 @@ Plug 'airblade/vim-gitgutter'		" Git signs in the gutter
 Plug 'vim-airline/vim-airline'		" Better status bar
 Plug 'paranoida/vim-airlineish'		" Theme for better status bar
 Plug 'easymotion/vim-easymotion'	" Quicker motions
+Plug 'AndrewRadev/splitjoin.vim'	" Split/join tags
 
 " Language Features / Autocompletion
 
@@ -157,7 +160,7 @@ set hidden				" Hide buffers instead of closing them
 
 set cursorline			" Show the cursor line
 set breakindent			" Indent wrapped lines to the same level as the broken line
-set showbreak=>>		" Break indent indicator
+set showbreak=>>	" Break indent indicator
 
 " Vim 7.3+ specific
 
@@ -194,8 +197,8 @@ let mapleader = "\\"
 nmap j gj
 nmap k gk
 
-nmap <Bar> :vsplit<CR>
-nmap _ :split<CR>
+nmap <Bar> :vsplit<CR>:CtrlP<CR>
+nmap _ :split<CR>:CtrlP<CR>
 nmap <Tab> <C-w>w
 
 " Because bending your little finger back is stupid
@@ -296,6 +299,13 @@ if has("gui_running")
 
 endif
 
+let i = 1
+
+while i <= 9
+	execute 'nnoremap <Leader>'.i.' :'.i.'wincmd w<CR>'
+	let i += 1
+endwhile
+
 "--------------------------------------------------------------
 " STARTIFY
 "--------------------------------------------------------------
@@ -333,6 +343,20 @@ let g:startify_custom_header = [
 " AIRLINE
 "--------------------------------------------------------------
 
+function! GetWindowNumber()
+	return tabpagewinnr(tabpagenr())
+endfunction
+
+function! StatusLineFileInfo()
+	return printf(
+		\ ' #%d%s%s%s ', 
+		\ GetWindowNumber(), 
+		\ &l:bomb ? ' ! BOM ! ' : '',
+		\ strlen(&fenc) > 0 ? ' : '.&fenc : '', 
+		\ strlen(&ff) > 0 ? ' : '.&ff : ''
+	\)
+endfunction
+
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
@@ -343,7 +367,8 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:airline_theme = 'airlineish'
 let g:airline_symbols.readonly = 'RO'
 let g:airline_section_c = '%<%{airline#util#wrap(airline#parts#readonly(),0)}%f %m'
-let g:airline_section_y = ' %{airline#util#wrap(printf("%s : %s", &fenc, &ff),0)} '
+" let g:airline_section_y = ' %{airline#util#wrap(printf("%s : %s", &fenc, &ff),0)} '
+let g:airline_section_y = '%{airline#util#wrap(StatusLineFileInfo(), 0)}'
 let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
