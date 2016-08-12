@@ -44,6 +44,7 @@ Plug 'vim-airline/vim-airline'		" Better status bar
 Plug 'paranoida/vim-airlineish'		" Theme for better status bar
 Plug 'easymotion/vim-easymotion'	" Quicker motions
 Plug 'AndrewRadev/splitjoin.vim'	" Split/join tags
+Plug 'PeterRincker/vim-argumentative' " Motions for function arguments
 
 " Language Features / Autocompletion
 
