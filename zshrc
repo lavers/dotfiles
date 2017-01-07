@@ -126,7 +126,7 @@ zle -N zle-line-finish
 
 RPROMPT='${vim_mode}'
 
-alias ls='ls -al --group-directories-first --color=always'
+alias ls='ls -hal --group-directories-first --color=always'
 
 alias gs='git status'
 alias gd='git diff'
