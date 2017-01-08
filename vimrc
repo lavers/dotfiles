@@ -73,6 +73,35 @@ function! Setup()
 
 endfunction
 
+function! MarkInsertStart()
+	let currentLine = line('.')
+	let b:insertStart = currentLine
+	let b:insertEnd = currentLine
+endfunction
+
+function! UpdateInsertBounds()
+	let currentLine = line('.')
+
+	if currentLine < b:insertStart
+		let b:insertStart = currentLine
+	elseif currentLine > b:insertEnd
+		let b:insertEnd = currentLine
+	endif
+
+endfunction
+
+function! StripTrailingWhitespace()
+	let currentPosition = getpos('.')
+	exec b:insertStart ',' b:insertEnd 's/\s\+$//e'
+	call setpos('.', currentPosition)
+endfunction
+
+augroup StripTrailingWhitespace
+	autocmd InsertEnter * :call MarkInsertStart()
+	autocmd InsertLeave * :call StripTrailingWhitespace()
+	autocmd CursorMovedI * :call UpdateInsertBounds()
+augroup END
+
 autocmd VimEnter * :call Setup()
 
 " Stop looking for a matching < when typing -> in php
