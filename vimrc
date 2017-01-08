@@ -284,6 +284,11 @@ nmap <Leader>v :vsplit ~/.vimrc<CR>
 nmap <Leader>p "*p
 nmap <Leader>y "*y
 
+" Move tabs left & right
+
+nmap <Leader>< :tabm -1<CR>
+nmap <Leader>> :tabm +1<CR>
+
 " Paste mode so autoindent doesnt fuck up pasting code in putty
 
 nmap <F12> :set paste!<CR>:AirlineRefresh<CR>
@@ -384,7 +389,7 @@ function! StatusLineFileInfo()
 		\ ' #%d%s%s%s ', 
 		\ GetWindowNumber(), 
 		\ &l:bomb ? ' ! BOM ! ' : '',
-		\ strlen(&fenc) > 0 ? ' : '.&fenc : '', 
+		\ strlen(&enc) > 0 ? ' : '.&enc : '', 
 		\ strlen(&ff) > 0 ? ' : '.&ff : ''
 	\)
 endfunction
