@@ -114,8 +114,8 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd BufNewFile,BufReadPost *.zsh-theme set filetype=sh
 
 augroup AutoHideCursorLine
-	autocmd BufWinEnter,WinEnter * setlocal cursorline
-	autocmd WinLeave * setlocal nocursorline
+	autocmd BufWinEnter,WinEnter * setlocal cursorline cursorcolumn
+	autocmd WinLeave * setlocal nocursorline nocursorcolumn
 augroup END
 
 " Vim tries to write to some random directory that doesnt exist by default 
@@ -143,6 +143,8 @@ silent! colorscheme molokai
 " Molokai uses a near-invisible select background for some reason
 
 highlight Visual ctermbg=240 
+highlight CursorColumn ctermbg=234
+highlight MatchParen ctermfg=015 ctermbg=202
 
 " Enable completion
 
@@ -182,13 +184,13 @@ set showmatch			" Show the matching bracket after closing a bracket
 set scrolloff=10		" Keep the cursor centered in the screen
 set sidescrolloff=5		" Only require 5 characters visible when side scrolling (stops huge jumps)
 set sidescroll=1		" Side scroll 1 character at a time 
-set visualbell			" No bloody beeping
 set number				" Show line numbers
 set splitbelow			" Open new splits below rather than above
 set splitright			" Open splits right rather than left
 set hidden				" Hide buffers instead of closing them
 
 set cursorline			" Show the cursor line
+set cursorcolumn		" Show the cursor column
 set breakindent			" Indent wrapped lines to the same level as the broken line
 set showbreak=>>	" Break indent indicator
 
