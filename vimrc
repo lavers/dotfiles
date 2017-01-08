@@ -49,7 +49,7 @@ Plug 'PeterRincker/vim-argumentative' " Motions for function arguments
 " Language Features / Autocompletion
 
 Plug 'scrooloose/syntastic'			" Syntax checking
-Plug 'vim-scripts/taglist.vim'		" Browser for functions/variables
+Plug 'majutsushi/tagbar'
 
 " System-specific Plugin File
 
@@ -255,7 +255,7 @@ nmap <Leader>lr :setlocal relativenumber<CR>
 
 nmap <Leader>e :CtrlP<CR>
 nmap <Leader>b :CtrlPBuffer<CR>
-nmap <Leader>t :TlistToggle<CR>
+nmap <Leader>t :TagbarToggle<CR>
 
 " Session saving (ONLY USE WHEN YOUVE ALREADY SET THE SESSION NAME)
 
