@@ -50,6 +50,7 @@ Plug 'PeterRincker/vim-argumentative' " Motions for function arguments
 
 Plug 'scrooloose/syntastic'			" Syntax checking
 Plug 'majutsushi/tagbar'
+Plug 'jiangmiao/auto-pairs'
 
 " System-specific Plugin File
 
@@ -215,6 +216,7 @@ set noswapfile
 
 command! W w 
 command! Q q
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|botright cwindow|redraw!
 
 "--------------------------------------------------------------
 " KEY MAPPINGS
@@ -296,6 +298,23 @@ nmap <F12> :set paste!<CR>:AirlineRefresh<CR>
 " Compiling latex documents
 
 nmap <Leader>lc :!pdflatex %<CR>
+
+" Search for word or WORD under cursor
+
+nmap <Leader>fw :Ag "\b<C-R><C-W>\b"<CR>
+nmap <Leader>fW :Ag "\b<C-R><C-A>\b"<CR>
+
+" Grep for last search string
+
+nmap <Leader>f/ :Ag <C-R>/<CR>
+
+" Manual grep
+
+nmap <Leader>ff :Ag<SPACE>
+
+" Close quickfix window
+
+nmap <Leader>fq :ccl<CR>
 
 " For when you forget to open with sudo
 
@@ -428,6 +447,15 @@ let g:ctrlp_switch_buffer = 'et'
 "--------------------------------------------------------------
 " SYSTEM-SPECIFIC VIMRC
 "--------------------------------------------------------------
+
+if executable('ag')
+
+	let g:ctrlp_user_command = 'ag %s -l -g ""'
+	let g:ctrlp_use_caching = 0
+
+	set grepprg=ag\ --nogroup\ --nocolor
+
+endif
 
 call SourceIfExists('~/.vim/system-vimrc.vim')
 
