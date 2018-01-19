@@ -199,9 +199,9 @@ set showbreak=>>	" Break indent indicator
 silent! set colorcolumn=100		" Print margin column
 silent! set relativenumber		" Relative line numbers
 
-" shellslash Causes problems with syntastic on windows
+" shellslash is needed on windows for Ctrl-P to work with forward slash
 
-set noshellslash
+set shellslash
 
 " no bloody swap files littering the place
 
@@ -328,6 +328,8 @@ if has("gui_running")
 
 	set guioptions-=T	" No toolbar
 	set guioptions-=r	" No right scrollbar
+	set guioptions-=m	" No menu bar
+	set guioptions-=L	" No left scrollbar
 	set mouse=""		" No mouse events
 
 	" Bigger default window size
@@ -420,7 +422,7 @@ highlight clear SignColumn
 " CTRLP
 "--------------------------------------------------------------
 
-let g:ctrlp_custom_ignore = '_compile\|_upload'
+let g:ctrlp_custom_ignore = '_compile\|_upload\|node_modules\|platforms'
 let g:ctrlp_switch_buffer = 'et'
 
 "--------------------------------------------------------------
