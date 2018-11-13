@@ -1,0 +1,24 @@
+[user]
+	name = Sam Lavers
+	email = sam@lave.rs
+	signingkey = 602129B10AAD08FD
+[color]
+	ui = true
+[core]
+	excludesfile = ~/.gitignore
+	autocrlf = off
+[push]
+	default = simple
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	gs = status
+	last = log -1 HEAD
+	di = diff --find-renames
+	dis = diff --find-renames --staged
+	shit = commit --amend
+	fuck = reset --soft HEAD^
+[commit]
+	gpgsign = true
+
