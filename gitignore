@@ -2,6 +2,10 @@
 
 !.gitkeep
 
+# Node stuff
+
+node_modules/*
+
 # Logfiles
 
 *.log
@@ -26,8 +30,8 @@ $RECYCLE.BIN/
 
 # Build directories
 
-[Dd]ebug/
-[Rr]elease/
+Debug/
+Release/
 x64/
 [Oo]bj/
 

@@ -31,7 +31,6 @@ Plug 'tomasr/molokai'
 " New Filetypes
 
 Plug 'tikhomirov/vim-glsl'	
-Plug 'cakebaker/scss-syntax.vim'
 
 " Behavior / Features
 
@@ -109,6 +108,10 @@ autocmd VimEnter * :call Setup()
 
 autocmd BufWinEnter *.php setlocal matchpairs-=<:>
 
+" Stop the default vim sass indent file using spaces rather than tabs
+
+autocmd BufNewFile,BufReadPost *.sass set shiftwidth=4 noexpandtab
+
 " Add markdown extension
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -144,7 +147,8 @@ silent! colorscheme molokai
 " Molokai uses a near-invisible select background for some reason
 
 highlight Visual ctermbg=240 
-highlight CursorColumn ctermbg=234
+highlight CursorColumn ctermbg=236
+highlight CursorLine ctermbg=236
 highlight MatchParen ctermfg=015 ctermbg=202
 
 " Enable completion
@@ -216,7 +220,7 @@ set noswapfile
 
 command! W w 
 command! Q q
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|botright cwindow|redraw!
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|botright cwindow|redraw!
 
 "--------------------------------------------------------------
 " KEY MAPPINGS
@@ -239,6 +243,7 @@ nmap <Tab> <C-w>w
 
 nmap <Leader>w <C-w>
 nmap <Leader>ww :vertical resize 
+nmap <bs> <C-w><C-P>
 
 " For quick easymotion activation
 
@@ -315,6 +320,10 @@ nmap <Leader>ff :Ag<SPACE>
 " Close quickfix window
 
 nmap <Leader>fq :ccl<CR>
+
+" Highlight occurances of word under cursor
+
+nmap <Leader>h *<C-o>
 
 " For when you forget to open with sudo
 
@@ -422,14 +431,16 @@ endif
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline_theme = 'airlineish'
+let g:airline_theme = 'minimalist'
 let g:airline_symbols.readonly = 'RO'
+let g:airline_highlighting_cache = 1
 let g:airline_section_c = '%<%{airline#util#wrap(airline#parts#readonly(),0)}%f %m'
-" let g:airline_section_y = ' %{airline#util#wrap(printf("%s : %s", &fenc, &ff),0)} '
+let g:airline_section_y = ' %{airline#util#wrap(printf("↕%s,↔%s", &fenc, &ff),0)} '
 let g:airline_section_y = '%{airline#util#wrap(StatusLineFileInfo(), 0)}'
 let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tagbar#enabled = 0
 
 "--------------------------------------------------------------
 " GITGUTTER
@@ -442,19 +453,16 @@ highlight clear SignColumn
 "--------------------------------------------------------------
 
 let g:ctrlp_custom_ignore = '_compile\|_upload\|node_modules\|platforms'
-let g:ctrlp_switch_buffer = 'et'
+let g:ctrlp_switch_buffer = 'e'
+let g:ctrlp_match_window = 'max:15,results:15'
 
 "--------------------------------------------------------------
 " SYSTEM-SPECIFIC VIMRC
 "--------------------------------------------------------------
 
 if executable('ag')
-
-	let g:ctrlp_user_command = 'ag %s -l -g ""'
-	let g:ctrlp_use_caching = 0
-
+	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 	set grepprg=ag\ --nogroup\ --nocolor
-
 endif
 
 call SourceIfExists('~/.vim/system-vimrc.vim')
