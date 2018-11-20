@@ -1,7 +1,5 @@
 export ZSH=~/.oh-my-zsh
 
-plugins=(git ssh-agent gpg-agent)
-
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
@@ -10,6 +8,8 @@ HIST_STAMPS="dd.mm.yyyy"
 
 zstyle :omz:plugins:ssh-agent identities id_rsa
 source $ZSH/oh-my-zsh.sh
+
+plugins=(git ssh-agent gpg-agent)
 
 # Env variables
 

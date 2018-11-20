@@ -9,14 +9,9 @@ function! SourceIfExists(filename)
 	let l:expanded = expand(a:filename)
 
 	if filereadable(l:expanded)
-
 		execute 'source '.fnameescape(l:expanded)
-
 	endif
-
 endfunction
-
-let html_no_rendering=1
 
 "--------------------------------------------------------------
 " PLUGINS 
@@ -32,29 +27,27 @@ Plug 'tomasr/molokai'
 
 Plug 'tikhomirov/vim-glsl'	
 
-" Behavior / Features
+" UI
 
 Plug 'mhinz/vim-startify'			" Start screen & sessions
 Plug 'ctrlpvim/ctrlp.vim'			" Fuzzy file finding
 Plug 'tpope/vim-fugitive'			" Git plugin
-Plug 'tpope/vim-surround'			" Surround text
 Plug 'airblade/vim-gitgutter'		" Git signs in the gutter
 Plug 'vim-airline/vim-airline'		" Better status bar
 Plug 'paranoida/vim-airlineish'		" Theme for better status bar
-Plug 'easymotion/vim-easymotion'	" Quicker motions
-Plug 'AndrewRadev/splitjoin.vim'	" Split/join tags
-Plug 'PeterRincker/vim-argumentative' " Motions for function arguments
+Plug 'majutsushi/tagbar'			" Ctags lists
 
 " Language Features / Autocompletion
 
 Plug 'scrooloose/syntastic'			" Syntax checking
-Plug 'majutsushi/tagbar'
-Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'			" Auto insert brackets
+Plug 'easymotion/vim-easymotion'	" Quicker motions
+Plug 'AndrewRadev/splitjoin.vim'	" Split/join tags
+Plug 'tpope/vim-surround'			" Surround text
 
 " System-specific Plugin File
 
 call SourceIfExists('~/.vim/system-plugins.vim')
-
 call plug#end()
 
 "--------------------------------------------------------------
@@ -70,8 +63,9 @@ function! Setup()
 	if exists('g:loaded_airline')
 		set noshowmode
 	endif
-
 endfunction
+
+" Strip trailing whitespace on the end of modified lines after leaving insert
 
 function! MarkInsertStart()
 	let currentLine = line('.')
@@ -87,7 +81,6 @@ function! UpdateInsertBounds()
 	elseif currentLine > b:insertEnd
 		let b:insertEnd = currentLine
 	endif
-
 endfunction
 
 function! StripTrailingWhitespace()
@@ -112,14 +105,14 @@ autocmd BufWinEnter *.php setlocal matchpairs-=<:>
 
 autocmd BufNewFile,BufReadPost *.sass set shiftwidth=4 noexpandtab
 
-" Add markdown extension
+" Non-default extension mappings
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd BufNewFile,BufReadPost *.zsh-theme set filetype=sh
 
 augroup AutoHideCursorLine
-	autocmd BufWinEnter,WinEnter * setlocal cursorline cursorcolumn
-	autocmd WinLeave * setlocal nocursorline nocursorcolumn
+	"autocmd BufWinEnter,WinEnter * setlocal cursorline cursorcolumn
+	"autocmd WinLeave * setlocal nocursorline nocursorcolumn
 augroup END
 
 " Vim tries to write to some random directory that doesnt exist by default 
@@ -188,14 +181,14 @@ set showcmd				" Show the command as its being typed
 set showmatch			" Show the matching bracket after closing a bracket
 set scrolloff=10		" Keep the cursor centered in the screen
 set sidescrolloff=5		" Only require 5 characters visible when side scrolling (stops huge jumps)
-set sidescroll=1		" Side scroll 1 character at a time 
+set sidescroll=5		" Side scroll 1 character at a time 
 set number				" Show line numbers
 set splitbelow			" Open new splits below rather than above
 set splitright			" Open splits right rather than left
 set hidden				" Hide buffers instead of closing them
 
-set cursorline			" Show the cursor line
-set cursorcolumn		" Show the cursor column
+"set cursorline			" Show the cursor line
+"set cursorcolumn		" Show the cursor column
 set breakindent			" Indent wrapped lines to the same level as the broken line
 set showbreak=>>	" Break indent indicator
 
@@ -329,6 +322,8 @@ nmap <Leader>h *<C-o>
 
 cmap w!! w !sudo tee > /dev/null %
 
+let html_no_rendering=1
+
 " Maven stuff
 
 function! MavenRunCurrentClass()
@@ -396,16 +391,6 @@ let g:startify_bookmarks = [
 	\ '~/.profile',
 	\ ]
 
-let g:startify_custom_header = [
-	\ '			 _			   ', 
-	\ '			(_)			   ',
-	\ '	__   __  _   _ __ ___  ',
-	\ '	\ \ / / | | | ''_ ` _ \',
-	\ '	 \ V /  | | | | | | | |',
-	\ '	  \_/   |_| |_| |_| |_|',
-	\ '						   ',
-	\ ]
-
 "--------------------------------------------------------------
 " AIRLINE
 "--------------------------------------------------------------
@@ -428,16 +413,14 @@ if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
 
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline_theme = 'minimalist'
+let g:airline_theme = 'airlineish'
 let g:airline_symbols.readonly = 'RO'
 let g:airline_highlighting_cache = 1
 let g:airline_section_c = '%<%{airline#util#wrap(airline#parts#readonly(),0)}%f %m'
-let g:airline_section_y = ' %{airline#util#wrap(printf("↕%s,↔%s", &fenc, &ff),0)} '
 let g:airline_section_y = '%{airline#util#wrap(StatusLineFileInfo(), 0)}'
-let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c '
+let g:airline_section_z = '%#__accent_bold#%4l%#__restore__# :%3c'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tagbar#enabled = 0
@@ -461,7 +444,7 @@ let g:ctrlp_match_window = 'max:15,results:15'
 "--------------------------------------------------------------
 
 if executable('ag')
-	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+	let g:ctrlp_user_command = 'ag %s -l --nocolor --ignore="*.png" --ignore="*.jpg" --ignore="*.jpeg" --ignore="*.gif" -g ""'
 	set grepprg=ag\ --nogroup\ --nocolor
 endif
 
