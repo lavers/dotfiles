@@ -9,7 +9,7 @@ HIST_STAMPS="dd.mm.yyyy"
 zstyle :omz:plugins:ssh-agent identities id_rsa
 source $ZSH/oh-my-zsh.sh
 
-plugins=(git ssh-agent gpg-agent)
+plugins=(git ssh-agent gpg-agent vi-mode)
 
 # Env variables
 
@@ -61,35 +61,14 @@ ${git_info} \
 
 setopt transientrprompt
 
-# Ensure that the prompt is redrawn when the terminal size changes.
-TRAPWINCH() 
-{
-	zle && { zle reset-prompt; zle -R }
-}
-
-# Set Vim Mode
-
-bindkey -v
 KEYTIMEOUT=1
+NORMAL_PROMPT="%{$fg_bold[magenta]%}[ NORMAL ]%{$reset_color%}"
+INSERT_PROMPT="%{$fg_bold[cyan]%}[ INSERT ]%{$reset_color%}"
 
-vim_normal_mode="%{$fg_bold[magenta]%}[ NORMAL ]%{$reset_color%}"
-vim_insert_mode="%{$fg_bold[cyan]%}[ INSERT ]%{$reset_color%}"
-
-vim_mode=$vim_insert_mode
-
-function zle-keymap-select 
+function vi_mode_prompt_info()
 {
-	vim_mode="${${KEYMAP/vicmd/${vim_normal_mode}}/(main|viins)/${vim_insert_mode}}"
-	zle reset-prompt
+	echo "${${${KEYMAP/vicmd/$NORMAL_PROMPT}/(main|viins)/$INSERT_PROMPT}:-$INSERT_PROMPT}"
 }
 
-function zle-line-finish
-{
-	vim_mode=$vim_insert_mode
-}
-
-zle -N zle-keymap-select
-zle -N zle-line-finish
-
-RPROMPT='${vim_mode}'
-
+bindkey '^[OH' beginning-of-line
+bindkey '^[OF' end-of-line
