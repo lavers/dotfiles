@@ -7,9 +7,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="dd.mm.yyyy"
 
 zstyle :omz:plugins:ssh-agent identities id_rsa
-source $ZSH/oh-my-zsh.sh
-
 plugins=(git ssh-agent gpg-agent vi-mode)
+
+source $ZSH/oh-my-zsh.sh
 
 # Env variables
 
