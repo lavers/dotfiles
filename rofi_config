@@ -1,0 +1,7 @@
+rofi.combi-modi: drun,ssh,window
+rofi.theme: ~/.config/rofi/themes/sam
+rofi.modi: combi,calc,run,power:/home/sam/bin/power-options
+rofi.show-icons: true
+rofi.matching: fuzzy
+rofi.display-combi: init
+rofi.drun-match-fields: name,generic,exec
