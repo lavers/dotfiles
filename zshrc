@@ -70,5 +70,10 @@ function vi_mode_prompt_info()
 	echo "${${${KEYMAP/vicmd/$NORMAL_PROMPT}/(main|viins)/$INSERT_PROMPT}:-$INSERT_PROMPT}"
 }
 
+if [ -f ~/.zshrc.local ]
+then
+	. ~/.zshrc.local
+fi
+
 bindkey '^[OH' beginning-of-line
 bindkey '^[OF' end-of-line
