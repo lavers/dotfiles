@@ -281,8 +281,8 @@ nmap <Leader>v :vsplit ~/.vimrc<CR>
 
 " System yank & paste
 
-nmap <Leader>p "*p
-nmap <Leader>y "*y
+nmap <Leader>p "+p
+nmap <Leader>y "+y
 
 " Move tabs left & right
 
