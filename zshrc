@@ -70,6 +70,17 @@ function vi_mode_prompt_info()
 	echo "${${${KEYMAP/vicmd/$NORMAL_PROMPT}/(main|viins)/$INSERT_PROMPT}:-$INSERT_PROMPT}"
 }
 
+# Source powerline if it's installed
+
+POWERLINE_INSTALL_DIR=$(pip show powerline-status | grep Location | cut -d ' ' -f2)
+
+if [ ! -z $POWERLINE_INSTALL_DIR ]
+then
+	. $POWERLINE_INSTALL_DIR/powerline/bindings/zsh/powerline.zsh
+fi
+
+# Source machine-specific configuration
+
 if [ -f ~/.zshrc.local ]
 then
 	. ~/.zshrc.local
