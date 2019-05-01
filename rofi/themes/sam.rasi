@@ -1,0 +1,113 @@
+* {
+	primaryColor: #fff;
+	dimPrimaryColor: #cfcfcf;
+	contrastPrimaryColor: #262626;
+	secondaryColor: #00bbff;
+	urgentColor: #ff0000;
+	activeColor: #ff9400;
+	areaBackground: #22222299;
+	overlay: #26262600;
+
+	font: "DejaVu Sans Mono Regular 16";
+	background-color: transparent;
+}
+
+window {
+	transparency: "real";
+	fullscreen: true;
+	background-color: @overlay;
+}
+
+mainbox {
+	margin: 35% 30% 15% 30%;
+	spacing: 0px;
+	children: [inputbar, message, sidebar, listview];
+}
+
+message {
+	background-color: @areaBackground;
+	margin: 0px 0px 10px 0px;
+	padding: 8px 15px;
+}
+
+textbox {
+	text-color: @dimPrimaryColor;
+}
+
+listview {
+	fixed-height: false;
+	dynamic: true;
+	scrollbar: true;
+	spacing: 0px;
+	padding: 1px 0px 0px 0px;
+	margin: 0px 0px 1px 0px;
+}
+
+element {
+	padding: 8px 15px 8px 15px;
+	border: 0px 0px 0px 10px;
+}
+
+element normal.normal {
+	padding: 4px 15px;
+	text-color: @dimPrimaryColor;
+}
+
+element normal.urgent {
+	text-color: @urgentColor;
+}
+
+element normal.active {
+	text-color: @activeColor;
+}
+
+element selected.normal {
+	border-color: @secondaryColor;
+	text-color: @secondaryColor;
+}
+
+element selected.urgent {
+	border-color: @urgentColor;
+	text-color: @urgentColor;
+}
+
+element selected.active {
+	border-color: @activeColor;
+	text-color: @activeColor;
+}
+
+element alternate.normal {
+	text-color: @dimPrimaryColor;
+}
+
+element alternate.urgent {
+	text-color: @urgentColor;
+}
+
+element alternate.active {
+	text-color: @activeColor;
+}
+
+scrollbar {
+	background-color: @areaBackground;
+	handle-color: @dimPrimaryColor;
+	handle-width: 15px;
+}
+
+inputbar {
+	spacing: 0px;
+	margin: 0px 0px 10px 0px;
+	border: 0px 0px 4px 0px;
+	border-color: @primaryColor;
+}
+
+prompt {
+	padding: 8px 14px 0px 14px;
+	background-color: @primaryColor;
+	text-color: @contrastPrimaryColor;
+}
+
+entry {
+	padding: 8px 14px;
+	text-color: @primaryColor;
+}
