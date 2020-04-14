@@ -1,90 +1,233 @@
-export ZSH=~/.oh-my-zsh
-
-HYPHEN_INSENSITIVE="true"
-ENABLE_CORRECTION="true"
-COMPLETION_WAITING_DOTS="true"
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-HIST_STAMPS="dd.mm.yyyy"
-
-zstyle :omz:plugins:ssh-agent identities id_rsa
-plugins=(git ssh-agent gpg-agent vi-mode)
-
-source $ZSH/oh-my-zsh.sh
+SHORT_HOSTNAME=$( ([ -z $SSH_CONNECTION ] && echo ${HOST/.*/}) || echo $HOST )
+CACHE_DIR="$HOME/.cache/zsh"
+[[ ! -d $CACHE_DIR ]] && mkdir -p $CACHE_DIR
 
 # Env variables
 
 export PATH=~/bin:$PATH
 export EDITOR=vim
+export MANWIDTH=80
+export PAGER=less
 
 # Aliases
 
 alias ls='ls -hal --group-directories-first --color=always'
+alias fuck='sudo $(!!)'
+alias clipcopy='xclip -in -selection clipboard'
+alias clippaste='xclip -out -selection clipboard'
+alias grep='grep --color=auto --exclude-dir=.git'
 
-# Stuff for generating the fancy vim style git prompt
+# General options
 
-local current_dir='${PWD/#$HOME/~}'
+setopt correct
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushdminus
+setopt interactivecomments
+setopt auto_cd
 
-YS_VCS_PROMPT_PREFIX1=" %{$fg[white]%}on%{$reset_color%} "
-YS_VCS_PROMPT_PREFIX2=":%{$fg[cyan]%}"
-YS_VCS_PROMPT_SUFFIX="%{$reset_color%}"
-YS_VCS_PROMPT_DIRTY=" %{$fg[red]%}✖︎"
-YS_VCS_PROMPT_CLEAN=" %{$fg[green]%}●"
+# History options
 
-local git_info='$(git_prompt_info)'
-ZSH_THEME_GIT_PROMPT_PREFIX="${YS_VCS_PROMPT_PREFIX1}git${YS_VCS_PROMPT_PREFIX2}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="$YS_VCS_PROMPT_SUFFIX"
-ZSH_THEME_GIT_PROMPT_DIRTY="$YS_VCS_PROMPT_DIRTY"
-ZSH_THEME_GIT_PROMPT_CLEAN="$YS_VCS_PROMPT_CLEAN"
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=10000
 
-function get_prompt()
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt extended_history
+setopt inc_append_history
+setopt hist_verify
+
+# Completions
+
+setopt always_to_end
+setopt complete_in_word
+
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path $CACHE_DIR
+zstyle ':completion:*' special-dirs true
+
+zstyle ':completion:*:*:*:*:*' menu select # always show the suggestion list
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,args --width=100"
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+
+autoload -U compinit
+compinit -d "$CACHE_DIR/compdump-$SHORT_HOSTNAME-$ZSH_VERSION"
+
+# auto-escaping of shell chars when typing/pasting a url
+
+autoload -Uz bracketed-paste-magic url-quote-magic
+zle -N bracketed-paste bracketed-paste-magic
+zle -N self-insert url-quote-magic
+
+# start or reuse existing ssh agent
+
+AGENT_CACHE="$CACHE_DIR/ssh-agent-$SHORT_HOSTNAME"
+
+function start_ssh_agent()
 {
-	if (( $? == 0 )); then
-
-		echo "%(?.%{$terminfo[bold]$fg[green]%}"
-	else
-		echo "$? "
-	fi
+	ssh-agent -s > $AGENT_CACHE
+	chmod 600 $AGENT_CACHE
+	. $AGENT_CACHE > /dev/null
 }
 
-PROMPT="
-%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
-%{$fg[cyan]%}%n \
-%{$fg[white]%}at \
-%{$fg[green]%}$HOST \
-%{$fg[white]%}in \
-%{$terminfo[bold]$fg[yellow]%}${current_dir}%{$reset_color%}\
-${git_info} \
-%{$fg[white]%}[%*]
-%(?.%{$terminfo[bold]$fg[green]%}.%{$terminfo[bold]$fg[red]%})→ %{$reset_color%}"
-
-# Get rid of RPS1 when accepting a command line (no trailing historical INSERT/NORMAL)
-
-setopt transientrprompt
-
-KEYTIMEOUT=1
-NORMAL_PROMPT="%{$fg_bold[magenta]%}[ NORMAL ]%{$reset_color%}"
-INSERT_PROMPT="%{$fg_bold[cyan]%}[ INSERT ]%{$reset_color%}"
-
-function vi_mode_prompt_info()
-{
-	echo "${${${KEYMAP/vicmd/$NORMAL_PROMPT}/(main|viins)/$INSERT_PROMPT}:-$INSERT_PROMPT}"
-}
-
-# Source powerline if it's installed
-
-POWERLINE_INSTALL_DIR=$(pip show powerline-status | grep Location | cut -d ' ' -f2)
-
-if [ ! -z $POWERLINE_INSTALL_DIR ]
+if [[ -f $AGENT_CACHE ]]
 then
-	. $POWERLINE_INSTALL_DIR/powerline/bindings/zsh/powerline.zsh
+	. $AGENT_CACHE > /dev/null
+	ps -p $SSH_AGENT_PID | grep -q ssh-agent || start_ssh_agent
+else
+	start_ssh_agent
 fi
+
+unfunction start_ssh_agent
+unset AGENT_CACHE
+
+# start gpg agent if not already running
+
+AGENT_SOCK=$(gpgconf --list-dirs | grep agent-socket | cut -d : -f 2)
+
+if [[ ! -S $AGENT_SOCK ]];
+then
+	gpg-agent --daemon --use-standard-socket &>/dev/null
+fi
+
+export GPG_TTY=$TTY
+unset AGENT_SOCK
+
+# Prompt setup
+
+zstyle ':vcs_info:git:*' formats '%b'
+autoload -Uz vcs_info colors
+precmd_functions=(vcs_info)
+colors
+
+typeset -AHg FG BG
+for code in {0..255}
+do
+    FG[$code]="%{[38;5;${code}m%}"
+    BG[$code]="%{[48;5;${code}m%}"
+done
+
+function color_pallete()
+{
+	for code in {0..254}
+	do
+		print -P -- "$code: %{$FG[$code]%}test foreground%{$reset_color%}\t\
+%{$BG[$code]%} test background %{$reset_color%}"
+	done
+}
+
+function git_prompt_info()
+{
+	STATUS=$(git status -b --porcelain 2>&1)
+
+	echo $STATUS | grep -q 'not a git repository' && return
+
+	echo -n "%{$bold_color%} on %{$FG[198]%}\ue0a0 $vcs_info_msg_0_ "
+
+	SYMBOLS=""
+
+	if $(echo $STATUS | grep -q '^[ MARC]M'); then SYMBOLS="$SYMBOLS!"; fi
+	if $(echo $STATUS | grep -q '^??'); then SYMBOLS="$SYMBOLS?"; fi
+	if $(echo $STATUS | grep -q '^[ MARC]D'); then SYMBOLS="$SYMBOLS\u2718"; fi
+	if $(echo $STATUS | grep -q '^\(A[ AMD]\|M[ MD ]\)'); then SYMBOLS="$SYMBOLS+"; fi
+
+	if $(echo $STATUS | grep -Eq '^## [^ ]+ .*ahead'); then
+		SYMBOLS="$SYMBOLS\u2b6d"
+	elif $(echo $STATUS | grep -Eq '^## [^ ]+ .*behind'); then
+		SYMBOLS="$SYMBOLS\u2b6b"
+	fi
+
+	if [[ -z $SYMBOLS ]]
+	then
+		echo -n "%{$FG[40]%}[\u2714]"
+	else
+
+		echo -n "%{$FG[196]%}[$SYMBOLS]"
+	fi
+
+	echo -n "%{$reset_color%}"
+}
+
+function display_prompt()
+{
+	echo -n "
+%{$reset_color%}%{$terminfo[bold]%}\
+$([[ -n $SSH_CONNECTION ]] && echo " %{$FG[45]%}%n%{$FG[135]%}@%{$FG[198]%}$SHORT_HOSTNAME ")\
+%{$FG[69]%} ${PWD/#$HOME/~}\
+%{$reset_color%}$(git_prompt_info)\
+%{$reset_color%}"
+
+	JOB_COUNT=$(jobs | grep -v '(pwd now' | wc -l)
+
+	if [ $JOB_COUNT != 0 ];
+	then
+		echo -n " %{$FG[208]%}[$JOB_COUNT job"
+		[ $JOB_COUNT != 1 ] && echo -n "s"
+		echo -n "]"
+	fi
+
+	echo -n "
+ $([[ $KEYMAP = 'vicmd' ]] && echo $NORMAL_PROMPT || echo $INSERT_PROMPT)\
+ %{$reset_color%}"
+	# \u3009 \u29fd \u27e9 \u2771 \u276f \u276d \u2794 
+}
+
+setopt prompt_subst
+
+PROMPT="\$(display_prompt)"
+NORMAL_PROMPT="%{$FG[166]%}\u276f\u276f\u276f"
+INSERT_PROMPT="%{$FG[45]%}\u276f%{$FG[135]%}\u276f%{$FG[198]%}\u276f"
+
+# vi-mode setup
+
+KEYTIMEOUT=10
+
+function zle-keymap-select()
+{
+	zle reset-prompt
+	zle -R
+}
+
+zle -N zle-keymap-select
+
+bindkey -v
+bindkey -M viins 'kj' vi-cmd-mode
+bindkey -M vicmd '\e' vi-add-next
+
+# v to edit the command line in vim
+
+zle -N edit-command-line
+autoload -Uz edit-command-line
+bindkey -M vicmd 'v' edit-command-line
+
+# add back some standard non-vi mode bindings
+
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^r' history-incremental-search-backward
+bindkey '^w' backward-kill-word
+bindkey '^a' beginning-of-line
+bindkey '^[OH' beginning-of-line
+bindkey '^e' end-of-line
+bindkey '^[OF' end-of-line
+
+bindkey "^[m" copy-prev-shell-word
+
+# Colored less man pages
+
+export LESS_TERMCAP_mb=$(tput bold; tput setaf 2)
+export LESS_TERMCAP_md=$(tput bold; tput setaf 6)
+export LESS_TERMCAP_me=$(tput sgr0)
+export LESS_TERMCAP_so=$(tput bold; tput setaf 0; tput setab 7)
+export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7)
+export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
 
 # Source machine-specific configuration
 
-if [ -f ~/.zshrc.local ]
-then
-	. ~/.zshrc.local
-fi
+[[ -f ~/.zshrc.local ]] && . ~/.zshrc.local
 
-bindkey '^[OH' beginning-of-line
-bindkey '^[OF' end-of-line
+unset CACHE_DIR

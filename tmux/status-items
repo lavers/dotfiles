@@ -1,0 +1,70 @@
+#!/bin/zsh
+
+LOAD_GRADIENT=(28 34 40 190 184 178 172 166 160)
+PLAY_ICON="\u25b6"
+PAUSE_ICON="\u23f8"
+
+get_dbus_target()
+{
+	dbus-send --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus \
+		org.freedesktop.DBus.ListNames \
+		| sed -rn 's/\s*string "(org\.mpris\.MediaPlayer2\.[^"]+)\s*"/\1/p' \
+		| head -n 1
+}
+
+case $1 in
+
+	media-available)
+		[[ -n $(get_dbus_target) ]] && echo "1" || echo "0"
+		;;
+
+	media-info)
+		DBUS_TARGET=$(get_dbus_target)
+
+		if [ -z $DBUS_TARGET ]
+		then
+			echo "No Media"
+			exit
+		fi
+
+		METADATA=$(dbus-send --session --dest=$DBUS_TARGET --print-reply /org/mpris/MediaPlayer2 \
+			org.freedesktop.DBus.Properties.Get \
+			string:org.mpris.MediaPlayer2.Player string:Metadata)
+
+		PLAY_STATUS=$(dbus-send --session --dest=$DBUS_TARGET --print-reply /org/mpris/MediaPlayer2 \
+			org.freedesktop.DBus.Properties.Get \
+			string:org.mpris.MediaPlayer2.Player string:PlaybackStatus \
+			| sed -rn 's/\s*variant\s*string "(.*)"/\1/p')
+
+		STATUS_ICON=$PAUSE_ICON
+		TRACK_TITLE=$(echo $METADATA | awk \
+			'p {print gensub(/\s*variant\s*string "(.*)"/, "\\1", "g"); p=0} /xesam:title/ {p=1}')
+		TRACK_ARTIST=$(echo $METADATA | awk \
+			'!--p {print gensub(/\s*string "(.*)"/, "\\1", "g")} /xesam:artist/ {p=2}')
+
+		if [ $PLAY_STATUS = "Playing" ];
+		then
+			STATUS_ICON=$PLAY_ICON
+		fi
+
+		echo "$STATUS_ICON $TRACK_ARTIST - $TRACK_TITLE"
+		;;
+
+	load-averages)
+
+		zmodload zsh/mathfunc
+
+		PROC_COUNT=$(nproc)
+
+		for AVERAGE in 1 2 3
+		do
+			AVERAGE=$(cat /proc/loadavg | cut -d ' ' -f $AVERAGE -)
+			NORMALIZED=$(( $AVERAGE / $PROC_COUNT))
+			NORMALIZED=$(( $NORMALIZED < 1 ? 1 : ($NORMALIZED > 2 ? 2 : $NORMALIZED) ))
+			INDEX=$(( int(floor(($NORMALIZED - 1) * (${#LOAD_GRADIENT[@]} - 1))) + 1 ))
+			COLOR=$LOAD_GRADIENT[$INDEX];
+
+			echo -n " #[fg=colour$COLOR]$AVERAGE"
+		done
+		;;
+esac
