@@ -36,6 +36,7 @@ Plug 'airblade/vim-gitgutter'		" Git signs in the gutter
 Plug 'vim-airline/vim-airline'		" Better status bar
 Plug 'paranoida/vim-airlineish'		" Theme for better status bar
 Plug 'majutsushi/tagbar'			" Ctags lists
+Plug 'ycm-core/YouCompleteMe'
 
 " Language Features / Autocompletion
 
@@ -109,6 +110,7 @@ autocmd BufNewFile,BufReadPost *.sass set shiftwidth=4 noexpandtab
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd BufNewFile,BufReadPost *.zsh-theme set filetype=sh
+autocmd BufNewFile,BufReadPost *.rasi set filetype=css
 
 augroup AutoHideCursorLine
 	"autocmd BufWinEnter,WinEnter * setlocal cursorline cursorcolumn
@@ -147,7 +149,7 @@ highlight MatchParen ctermfg=015 ctermbg=202
 " Enable completion
 
 " set omnifunc=syntaxcomplete#Complete
-set completeopt-=preview
+"set completeopt-=preview
 
 " Similar filename completion to bash
 
