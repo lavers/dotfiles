@@ -8,7 +8,8 @@
 	areaBackground: #22222299;
 	overlay: #26262600;
 
-	font: "DejaVu Sans Mono Regular 16";
+	/*font: "DejaVu Sans Mono Regular 16";*/
+	font: "Google Sans Bold 16";
 	background-color: transparent;
 }
 
@@ -21,7 +22,7 @@ window {
 mainbox {
 	margin: 35% 30% 15% 30%;
 	spacing: 0px;
-	children: [inputbar, message, sidebar, listview];
+	children: [inputbar, message, listview];
 }
 
 message {
