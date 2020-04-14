@@ -1,4 +1,4 @@
-SHORT_HOSTNAME=$( ([ -z $SSH_CONNECTION ] && echo ${HOST/.*/}) || echo $HOST )
+SHORT_HOSTNAME=${HOST/.*/}
 CACHE_DIR="$HOME/.cache/zsh"
 [[ ! -d $CACHE_DIR ]] && mkdir -p $CACHE_DIR
 
@@ -16,6 +16,7 @@ alias fuck='sudo $(!!)'
 alias clipcopy='xclip -in -selection clipboard'
 alias clippaste='xclip -out -selection clipboard'
 alias grep='grep --color=auto --exclude-dir=.git'
+alias dc='docker-compose'
 
 # General options
 
@@ -123,7 +124,7 @@ function git_prompt_info()
 {
 	STATUS=$(git status -b --porcelain 2>&1)
 
-	echo $STATUS | grep -q 'not a git repository' && return
+	[[ $? != 0 ]] && return
 
 	echo -n "%{$bold_color%} on %{$FG[198]%}\ue0a0 $vcs_info_msg_0_ "
 
@@ -155,7 +156,7 @@ function display_prompt()
 {
 	echo -n "
 %{$reset_color%}%{$terminfo[bold]%}\
-$([[ -n $SSH_CONNECTION ]] && echo " %{$FG[45]%}%n%{$FG[135]%}@%{$FG[198]%}$SHORT_HOSTNAME ")\
+$([[ -n $SSH_CONNECTION ]] && echo " %{$FG[45]%}%n%{$FG[135]%}@%{$FG[198]%}$SHORT_HOSTNAME %{$reset_color$terminfo[bold]%}in")\
 %{$FG[69]%} ${PWD/#$HOME/~}\
 %{$reset_color%}$(git_prompt_info)\
 %{$reset_color%}"
