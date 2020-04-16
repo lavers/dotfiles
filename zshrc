@@ -77,8 +77,11 @@ function start_ssh_agent()
 
 if [[ -n $SSH_AUTH_SOCK ]]
 then
-	ln -sf $SSH_AUTH_SOCK $AGENT_FORWARDING_SYMLINK
-	export SSH_AUTH_SOCK=$AGENT_FORWARDING_SYMLINK
+	if [[ $SSH_AUTH_SOCK != $AGENT_FORWARDING_SYMLINK ]]
+	then
+		ln -sf $SSH_AUTH_SOCK $AGENT_FORWARDING_SYMLINK
+		export SSH_AUTH_SOCK=$AGENT_FORWARDING_SYMLINK
+	fi
 else
 	if [[ -f $AGENT_CACHE ]]
 	then
