@@ -66,6 +66,7 @@ zle -N self-insert url-quote-magic
 # start or reuse existing ssh agent
 
 AGENT_CACHE="$CACHE_DIR/ssh-agent-$SHORT_HOSTNAME"
+AGENT_FORWARDING_SYMLINK="$CACHE_DIR/forwarded-agent-socket"
 
 function start_ssh_agent()
 {
@@ -74,8 +75,11 @@ function start_ssh_agent()
 	. $AGENT_CACHE > /dev/null
 }
 
-if [[ -z $SSH_AUTH_SOCK ]]
+if [[ -n $SSH_AUTH_SOCK ]]
 then
+	ln -sf $SSH_AUTH_SOCK $AGENT_FORWARDING_SYMLINK
+	export SSH_AUTH_SOCK=$AGENT_FORWARDING_SYMLINK
+else
 	if [[ -f $AGENT_CACHE ]]
 	then
 		. $AGENT_CACHE > /dev/null
