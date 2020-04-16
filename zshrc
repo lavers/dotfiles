@@ -74,12 +74,15 @@ function start_ssh_agent()
 	. $AGENT_CACHE > /dev/null
 }
 
-if [[ -f $AGENT_CACHE ]]
+if [[ -z $SSH_AUTH_SOCK ]]
 then
-	. $AGENT_CACHE > /dev/null
-	ps -p $SSH_AGENT_PID | grep -q ssh-agent || start_ssh_agent
-else
-	start_ssh_agent
+	if [[ -f $AGENT_CACHE ]]
+	then
+		. $AGENT_CACHE > /dev/null
+		ps -p $SSH_AGENT_PID | grep -q ssh-agent || start_ssh_agent
+	else
+		start_ssh_agent
+	fi
 fi
 
 unfunction start_ssh_agent
