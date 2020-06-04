@@ -22,24 +22,22 @@ call plug#begin()
 " Color Schemes
 
 Plug 'tomasr/molokai'
+Plug 'paranoida/vim-airlineish'
 
-" New Filetypes
-
-Plug 'tikhomirov/vim-glsl'	
-
-" UI
+" Tools / Interface
 
 Plug 'mhinz/vim-startify'			" Start screen & sessions
 Plug 'ctrlpvim/ctrlp.vim'			" Fuzzy file finding
 Plug 'tpope/vim-fugitive'			" Git plugin
+Plug 'tpope/vim-obsession'			" Session managment
 Plug 'airblade/vim-gitgutter'		" Git signs in the gutter
 Plug 'vim-airline/vim-airline'		" Better status bar
-Plug 'paranoida/vim-airlineish'		" Theme for better status bar
 Plug 'majutsushi/tagbar'			" Ctags lists
 Plug 'ycm-core/YouCompleteMe'
 
 " Language Features / Autocompletion
 
+Plug 'tikhomirov/vim-glsl'	
 Plug 'scrooloose/syntastic'			" Syntax checking
 Plug 'jiangmiao/auto-pairs'			" Auto insert brackets
 Plug 'easymotion/vim-easymotion'	" Quicker motions
