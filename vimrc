@@ -45,6 +45,7 @@ Plug 'jiangmiao/auto-pairs'			" Auto insert brackets
 Plug 'easymotion/vim-easymotion'	" Quicker motions
 Plug 'AndrewRadev/splitjoin.vim'	" Split/join tags
 Plug 'tpope/vim-surround'			" Surround text
+Plug 'tweekmonster/wstrip.vim'		" Strip trailing whitespace from changed lines
 
 " System-specific Plugin File
 
@@ -66,45 +67,16 @@ function! Setup()
 	endif
 endfunction
 
-" Strip trailing whitespace on the end of modified lines after leaving insert
-
-function! MarkInsertStart()
-	let currentLine = line('.')
-	let b:insertStart = currentLine
-	let b:insertEnd = currentLine
-endfunction
-
-function! UpdateInsertBounds()
-	let currentLine = line('.')
-
-	if currentLine < b:insertStart
-		let b:insertStart = currentLine
-	elseif currentLine > b:insertEnd
-		let b:insertEnd = currentLine
-	endif
-endfunction
-
-function! StripTrailingWhitespace()
-	let currentPosition = getpos('.')
-	exec b:insertStart ',' b:insertEnd 's/\s\+$//e'
-	call setpos('.', currentPosition)
-endfunction
-
-augroup StripTrailingWhitespace
-	autocmd InsertEnter * :call MarkInsertStart()
-	autocmd InsertLeave * :call StripTrailingWhitespace()
-	autocmd CursorMovedI * :call UpdateInsertBounds()
-augroup END
-
 autocmd VimEnter * :call Setup()
 
 " Stop looking for a matching < when typing -> in php
 
 autocmd BufWinEnter *.php setlocal matchpairs-=<:>
 
-" Stop the default vim sass indent file using spaces rather than tabs
+" Stop the default vim sass/rust indent file using spaces rather than tabs
 
 autocmd BufNewFile,BufReadPost *.sass set shiftwidth=4 noexpandtab
+autocmd BufNewFile,BufReadPost *.rs set shiftwidth=4 noexpandtab
 
 " Non-default extension mappings
 
@@ -113,8 +85,8 @@ autocmd BufNewFile,BufReadPost *.zsh-theme set filetype=sh
 autocmd BufNewFile,BufReadPost *.rasi set filetype=css
 
 augroup AutoHideCursorLine
-	"autocmd BufWinEnter,WinEnter * setlocal cursorline cursorcolumn
-	"autocmd WinLeave * setlocal nocursorline nocursorcolumn
+	autocmd BufWinEnter,WinEnter * setlocal cursorline
+	autocmd WinLeave * setlocal nocursorline
 augroup END
 
 " Vim tries to write to some random directory that doesnt exist by default 
@@ -431,7 +403,9 @@ let g:airline#extensions#tagbar#enabled = 0
 " GITGUTTER
 "--------------------------------------------------------------
 
-highlight clear SignColumn
+highlight GitGutterAdd    guifg=#009900 ctermfg=2 ctermbg=235
+highlight GitGutterChange guifg=#bbbb00 ctermfg=3 ctermbg=235
+highlight GitGutterDelete guifg=#ff2222 ctermfg=1 ctermbg=235
 
 "--------------------------------------------------------------
 " CTRLP
@@ -440,6 +414,12 @@ highlight clear SignColumn
 let g:ctrlp_custom_ignore = '_compile\|_upload\|node_modules\|platforms'
 let g:ctrlp_switch_buffer = 'e'
 let g:ctrlp_match_window = 'max:15,results:15'
+
+"--------------------------------------------------------------
+" WStrip
+"--------------------------------------------------------------
+
+let g:wstrip_auto = 1
 
 "--------------------------------------------------------------
 " SYSTEM-SPECIFIC VIMRC
