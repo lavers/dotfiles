@@ -1,0 +1,13 @@
+brace_style = "AlwaysNextLine"
+control_brace_style = "AlwaysNextLine"
+empty_item_single_line = true
+format_strings = true
+hard_tabs = true
+imports_layout = "HorizontalVertical"
+newline_style = "Unix"
+reorder_impl_items = true
+struct_lit_single_line = false
+trailing_comma = "Never"
+use_field_init_shorthand = true
+use_try_shorthand = true
+wrap_comments = true

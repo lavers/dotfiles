@@ -1,0 +1,18 @@
+!active 0,1
+!urgent 2,3
+hibernate			systemctl hibernate
+sleep				qdbus org.kde.Solid.PowerManagement /org/freedesktop/PowerManagement Suspend
+poweroff			qdbus org.kde.ksmserver /KSMServer logout 0 2 3
+reboot				qdbus org.kde.ksmserver /KSMServer logout 0 1 3
+logout				qdbus org.kde.ksmserver /KSMServer logout 0 0 3
+brightness 0%		set-brightness 0
+brightness 25%		set-brightness 25
+brightness 50%		set-brightness 50
+brightness 75%		set-brightness 75
+brightness 100%		set-brightness 100
+lights on			ram-rgb on
+lights off			ram-rgb off
+lights blue			ram-rgb set 00aaff
+lights purple		ram-rgb set aa00ff
+lights red			ram-rgb set ff0000
+lights orange		ram-rgb set ff7700

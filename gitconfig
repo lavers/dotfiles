@@ -1,11 +1,13 @@
 [user]
 	name = Sam Lavers
 	email = sam@lave.rs
-	signingkey = 602129B10AAD08FD
+	signingkey = EDD011CA
 [color]
 	ui = true
+[pull]
+	rebase = true
 [core]
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.config/git/ignore
 	autocrlf = off
 [push]
 	default = simple
@@ -21,4 +23,5 @@
 	fuck = reset --soft HEAD^
 [commit]
 	gpgsign = true
-
+[tag]
+	sort = -v:refname

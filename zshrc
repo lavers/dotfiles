@@ -1,5 +1,6 @@
 SHORT_HOSTNAME=${HOST/.*/}
-CACHE_DIR="$HOME/.cache/zsh"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 [[ ! -d $CACHE_DIR ]] && mkdir -p $CACHE_DIR
 
 # Env variables
@@ -16,7 +17,14 @@ alias fuck='sudo $(!!)'
 alias clipcopy='xclip -in -selection clipboard'
 alias clippaste='xclip -out -selection clipboard'
 alias grep='grep --color=auto --exclude-dir=.git'
-alias dc='docker-compose'
+alias dc="sudo $(which docker-compose)"
+alias d1='ssh docker1'
+alias d1a='ssh -o "ForwardAgent=yes" docker1'
+alias d2a="ssh \
+	-o 'ForwardAgent=yes' \
+	-o 'RemoteForward=/run/user/1000/gnupg/S.gpg-agent \
+		$(gpgconf --list-dirs | grep agent-extra-socket | cut -d : -f 2)' \
+	docker2"
 
 # General options
 
@@ -29,7 +37,7 @@ setopt auto_cd
 
 # History options
 
-HISTFILE="$HOME/.zsh_history"
+HISTFILE="${CONFIG_DIR}/history"
 HISTSIZE=50000
 SAVEHIST=10000
 
@@ -48,10 +56,12 @@ setopt complete_in_word
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion::complete:*' cache-path $CACHE_DIR
 zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' list-dirs-first true
 
 zstyle ':completion:*:*:*:*:*' menu select # always show the suggestion list
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,args --width=100"
+zstyle ':completion:*' list-colors ''
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
 autoload -U compinit
@@ -75,14 +85,15 @@ function start_ssh_agent()
 	. $AGENT_CACHE > /dev/null
 }
 
-if [[ -n $SSH_AUTH_SOCK ]]
+if [[ -n "$SSH_AUTH_SOCK" ]]
 then
 	if [[ $SSH_AUTH_SOCK != $AGENT_FORWARDING_SYMLINK ]]
 	then
 		ln -sf $SSH_AUTH_SOCK $AGENT_FORWARDING_SYMLINK
 		export SSH_AUTH_SOCK=$AGENT_FORWARDING_SYMLINK
 	fi
-else
+elif [[ -z "$SSH_CLIENT" ]]
+then
 	if [[ -f $AGENT_CACHE ]]
 	then
 		. $AGENT_CACHE > /dev/null
@@ -237,8 +248,18 @@ export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
 export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7)
 export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
 
+function try_source_plugin()
+{
+	[[ -f /usr/share/zsh/plugins/$1/$1.zsh ]] && . /usr/share/zsh/plugins/$1/$1.zsh
+}
+
+try_source_plugin zsh-autosuggestions
+try_source_plugin zsh-syntax-highlighting
+try_source_plugin zsh-history-substring-search
+
 # Source machine-specific configuration
 
-[[ -f ~/.zshrc.local ]] && . ~/.zshrc.local
+[[ -f $CONFIG_DIR/.zshrc.local ]] && . $CONFIG_DIR/.zshrc.local
 
 unset CACHE_DIR
+unset CONFIG_DIR
