@@ -9,6 +9,9 @@ export PATH=~/bin:$PATH
 export EDITOR=vim
 export MANWIDTH=80
 export PAGER=less
+export FZF_DEFAULT_COMMAND="rg --files --hidden --iglob '!**/.git/'"
+export SCREENRC="${XDG_CONFIG_HOME:-$HOME/.config}/screen/screenrc"
+export TEXMFHOME="${XDG_CONFIG_HOME:-$HOME/.config}/texmf"
 
 # Aliases
 
@@ -17,7 +20,6 @@ alias fuck='sudo $(!!)'
 alias clipcopy='xclip -in -selection clipboard'
 alias clippaste='xclip -out -selection clipboard'
 alias grep='grep --color=auto --exclude-dir=.git'
-alias dc="sudo $(which docker-compose)"
 alias d1='ssh docker1'
 alias d1a='ssh -o "ForwardAgent=yes" docker1'
 alias d2a="ssh \
@@ -25,6 +27,16 @@ alias d2a="ssh \
 	-o 'RemoteForward=/run/user/1000/gnupg/S.gpg-agent \
 		$(gpgconf --list-dirs | grep agent-extra-socket | cut -d : -f 2)' \
 	docker2"
+alias rust-gdb="rust-gdb -x /usr/share/gdb-dashboard/.gdbinit"
+alias fvim="nvim \$(fzf)"
+alias kp="kill -9 \$(ps -eo 'pid,pcpu,user,start,cmd' --sort '-pcpu' | sed 1d | fzf -m --header '[kill processes]' | awk '{print $1}')"
+
+if id -nzG $USER | grep -qzx "docker"
+then
+    alias dc="$(which docker-compose)"
+else
+    alias dc="sudo $(which docker-compose)"
+fi
 
 # General options
 

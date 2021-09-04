@@ -1,11 +1,14 @@
-rofi.combi-modi: drun,ssh,window
-rofi.theme: ~/.config/rofi/themes/sam
-rofi.modi: combi,system:/home/sam/bin/rofi-system,search
-rofi.show-icons: true
-rofi.matching: fuzzy
-rofi.display-combi: init
-rofi.drun-match-fields: name,generic
-rofi.drun-display-format: {name}
-rofi.kb-row-tab: 
-rofi.kb-mode-next: Tab
-rofi.kb-mode-previous Shift+Tab
+configuration
+{
+	combi-modi: "drun,ssh,window";
+	theme: "~/.config/rofi/themes/sam";
+	modi: "combi,system:/home/sam/bin/rofi-system,search";
+	show-icons: true;
+	matching: "fuzzy";
+	display-combi: "init";
+	drun-match-fields: "name";
+	drun-display-format: "{name}";
+	kb-row-tab: "";
+	kb-mode-next: "Tab";
+	kb-mode-previous: "Shift+Tab";
+}
