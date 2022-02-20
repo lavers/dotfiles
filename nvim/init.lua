@@ -195,10 +195,10 @@ vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
-local defaults = { Error = "Red", Warning = "Yellow", Information = "14", Hint = "13" }
+local defaults = { Error = "Red", Warn = "Yellow", Info = "14", Hint = "13" }
 
 for type, color in pairs(defaults) do
-	local group = "LspDiagnosticsDefault" .. type
+	local group = "Diagnostic" .. type
 	local hl = vim.api.nvim_get_hl_by_name(group, true)
 	vim.cmd("hi " .. group .. " ctermfg=" .. color)
 	vim.fn.sign_define("LspDiagnosticsSign" .. type, { text = ">>", texthl = group })

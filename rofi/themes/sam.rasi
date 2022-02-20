@@ -6,23 +6,24 @@
 	urgentColor: #ff0000;
 	activeColor: #ff9400;
 	areaBackground: #22222299;
-	overlay: #26262600;
+	borderColor: #333;
+	overlay: #1c1c1cee;
 
-	/*font: "DejaVu Sans Mono Regular 16";*/
-	font: "Google Sans Bold 16";
+	font: "Iosevka Sam Bold Expanded 16";
 	background-color: transparent;
 }
 
 window {
 	transparency: "real";
-	fullscreen: true;
+	width: 700px;
 	background-color: @overlay;
+	border-color: @borderColor;
+	border: 1px;
+	y-offset: -150px;
 }
 
 mainbox {
-	margin: 35% 30% 15% 30%;
 	spacing: 0px;
-	children: [inputbar, message, listview];
 }
 
 message {
@@ -40,13 +41,13 @@ listview {
 	dynamic: true;
 	scrollbar: true;
 	spacing: 0px;
-	padding: 1px 0px 0px 0px;
 	margin: 0px 0px 1px 0px;
+	lines: 12;
 }
 
 element {
-	padding: 8px 15px 8px 15px;
-	border: 0px 0px 0px 10px;
+	padding: 8px 15px 8px 10px;
+	border: 0px 0px 0px 6px;
 }
 
 element-text {
@@ -60,7 +61,6 @@ element-icon {
 }
 
 element normal.normal {
-	padding: 4px 15px;
 	text-color: @dimPrimaryColor;
 }
 
@@ -107,9 +107,8 @@ scrollbar {
 
 inputbar {
 	spacing: 0px;
-	margin: 0px 0px 10px 0px;
-	border: 0px 0px 4px 0px;
-	border-color: @primaryColor;
+	border: 0px 0px 1px 0px;
+	border-color: @borderColor;
 }
 
 prompt {
@@ -119,6 +118,6 @@ prompt {
 }
 
 entry {
-	padding: 8px 14px;
+	padding: 10px 14px;
 	text-color: @primaryColor;
 }

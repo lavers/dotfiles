@@ -30,11 +30,6 @@ Plug 'junegunn/fzf.vim'
 
 " Language Features / Autocompletion
 
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
-Plug 'simrat39/rust-tools.nvim'
-Plug 'simrat39/symbols-outline.nvim'
-Plug 'ray-x/lsp_signature.nvim'
 Plug 'tikhomirov/vim-glsl'
 Plug 'jiangmiao/auto-pairs'
 Plug 'easymotion/vim-easymotion'
@@ -42,12 +37,17 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tpope/vim-surround'
 Plug 'tweekmonster/wstrip.vim'
 
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'mfussenegger/nvim-dap'
-
 if has("nvim")
+	Plug 'neovim/nvim-lspconfig'
+	Plug 'hrsh7th/nvim-compe'
+	Plug 'simrat39/rust-tools.nvim'
+	Plug 'simrat39/symbols-outline.nvim'
+	Plug 'ray-x/lsp_signature.nvim'
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
+	Plug 'mfussenegger/nvim-dap'
 	Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+	Plug 'nvim-treesitter/playground'
 endif
 
 call SourceIfExists('~/.config/nvim/plugins.vim')
@@ -146,6 +146,7 @@ set breakindent			" Indent wrapped lines to the same level as the broken line
 set showbreak=>>		" Break indent indicator
 set shortmess+=cI		" unsure
 set updatetime=300		" Delay before gitgutter updates
+set foldlevel=99		" Open all folds by default
 
 " Vim 7.3+ specific
 
