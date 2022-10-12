@@ -76,8 +76,8 @@ local on_lspserver_attach = function(client, bufnr)
 
 	bufmap('<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>')
 	bufmap('<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-	bufmap('<leader>i', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
-	bufmap('<leader>ll', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
+	bufmap('<leader>i', '<cmd>lua vim.diagnostic.open_float()<CR>')
+	bufmap('<leader>ll', '<cmd>lua vim.diagnostic.setloclist()<CR>')
 	bufmap('<leader>fm', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 	bufmap('[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
 	bufmap(']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
@@ -203,4 +203,3 @@ for type, color in pairs(defaults) do
 	vim.cmd("hi " .. group .. " ctermfg=" .. color)
 	vim.fn.sign_define("LspDiagnosticsSign" .. type, { text = ">>", texthl = group })
 end
-

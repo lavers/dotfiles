@@ -19,7 +19,12 @@ window {
 	background-color: @overlay;
 	border-color: @borderColor;
 	border: 1px;
+	anchor: north;
 	y-offset: -150px;
+}
+
+case-indicator {
+	enabled: false;
 }
 
 mainbox {

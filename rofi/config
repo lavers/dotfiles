@@ -1,22 +1,29 @@
 configuration
 {
-	combi-modi: "drun,ssh,window";
-	modi: "combi,system:/home/sam/bin/rofi-system,search";
-	show-icons: true;
+	combi-modes: "drun,window";
+	modes: "combi,system:/home/sam/bin/rofi-system";
+
 	matching: "fuzzy";
+	/*
+	sort: true;
+	sorting-method: "fzf";
+	*/
+
+	show-icons: true;
 	display-combi: "apps";
 	drun-match-fields: "name";
 	drun-display-format: "{name}";
-	kb-row-tab: "";
-	kb-mode-next: "Tab";
-	kb-mode-previous: "Shift+Tab";
-	kb-clear-line: "Control+c";
 	window-thumbnail: true;
 	combi-hide-mode-prefix: true;
 	window-format: "{c} {t}";
 	scroll-method: 1;
+
+	kb-element-next: "";
+	kb-mode-next: "Tab";
+	kb-mode-previous: "Shift+Tab";
+	kb-clear-line: "Control+c";
 /*	icon-theme: ;*/
 /*	drun-categories: ;*/
 /*	parse-known-hosts: true;*/
 }
-@theme "~/.config/rofi/themes/sam"
+@theme "~/.config/rofi/themes/sam.rasi"

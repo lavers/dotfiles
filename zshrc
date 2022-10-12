@@ -38,6 +38,13 @@ else
     alias dc="sudo $(which docker-compose)"
 fi
 
+alias gc='git commit'
+alias gp='git push'
+alias gpu='git pull'
+alias gs='git status'
+alias ga='git add'
+alias gch='git checkout'
+
 # General options
 
 setopt correct
