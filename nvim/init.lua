@@ -203,3 +203,11 @@ for type, color in pairs(defaults) do
 	vim.cmd("hi " .. group .. " ctermfg=" .. color)
 	vim.fn.sign_define("LspDiagnosticsSign" .. type, { text = ">>", texthl = group })
 end
+
+vim.api.nvim_set_hl(0, "@variable", { ctermfg = 252 })
+vim.api.nvim_set_hl(0, "@variable.builtin", { link = 'Special' })
+vim.api.nvim_set_hl(0, "@type.qualifier", { link = 'Operator' })
+vim.api.nvim_set_hl(0, "@exception", { link = 'Error' })
+vim.api.nvim_set_hl(0, "@namespace", { link = 'Include' })
+vim.api.nvim_set_hl(0, "@storageclass", { link = 'Keyword' })
+vim.api.nvim_set_hl(0, "@storageclass.lifetime", { link = 'Label' })
