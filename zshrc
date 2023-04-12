@@ -12,6 +12,7 @@ export PAGER=less
 export FZF_DEFAULT_COMMAND="rg --files --hidden --iglob '!**/.git/'"
 export SCREENRC="${XDG_CONFIG_HOME:-$HOME/.config}/screen/screenrc"
 export TEXMFHOME="${XDG_CONFIG_HOME:-$HOME/.config}/texmf"
+export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/ripgrep.rc"
 
 # Aliases
 
@@ -30,6 +31,12 @@ alias d2a="ssh \
 alias rust-gdb="rust-gdb -x /usr/share/gdb-dashboard/.gdbinit"
 alias fvim="nvim \$(fzf)"
 alias kp="kill -9 \$(ps -eo 'pid,pcpu,user,start,cmd' --sort '-pcpu' | sed 1d | fzf -m --header '[kill processes]' | awk '{print $1}')"
+alias gc='git commit'
+alias gp='git push'
+alias gpu='git pull'
+alias gs='git status'
+alias ga='git add'
+alias gch='git checkout'
 
 if id -nzG $USER | grep -qzx "docker"
 then
@@ -37,13 +44,6 @@ then
 else
     alias dc="sudo $(which docker-compose)"
 fi
-
-alias gc='git commit'
-alias gp='git push'
-alias gpu='git pull'
-alias gs='git status'
-alias ga='git add'
-alias gch='git checkout'
 
 # General options
 

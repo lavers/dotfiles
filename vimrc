@@ -163,6 +163,7 @@ command! W w
 command! Wq wq
 command! Q q
 command! Qa qa
+command! -nargs=+ Rg execute 'silent grep! <args>' | botright copen 12
 
 "--------------------------------------------------------------
 " KEY MAPPINGS
@@ -172,9 +173,10 @@ inoremap kj <Esc>
 let mapleader = "\\"
 set pastetoggle=<F12>
 
-" Make j & k move between screen rows instead of lines (on wrapped lines)
-nmap j gj
-nmap k gk
+" Make j & k move between screen rows instead of lines (on wrapped lines,
+" but not in the quickfix window)
+nnoremap <expr> j (&buftype is# "quickfix" ? "j" : "gj")
+nnoremap <expr> k (&buftype is# "quickfix" ? "k" : "gk")
 
 nmap Q <nop>
 
@@ -245,6 +247,8 @@ nmap <Leader>f/ :grep <C-R>/<CR>
 
 " Manual grep
 nmap <Leader>ff :grep<SPACE>
+
+nmap <Leader>g :Rg<SPACE>
 
 " Close quickfix window
 nmap <Leader>fq :ccl<CR>
