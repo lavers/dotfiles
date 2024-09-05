@@ -1,18 +1,25 @@
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+
 SHORT_HOSTNAME=${HOST/.*/}
-CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+CACHE_DIR="$XDG_CACHE_HOME/zsh"
+CONFIG_DIR="$XDG_CONFIG_HOME/zsh"
 [[ ! -d $CACHE_DIR ]] && mkdir -p $CACHE_DIR
 
 # Env variables
 
-export PATH=~/bin:$PATH
-export EDITOR=vim
+export PATH=~/.bin:$PATH
+export EDITOR=nvim
 export MANWIDTH=80
 export PAGER=less
 export FZF_DEFAULT_COMMAND="rg --files --hidden --iglob '!**/.git/'"
-export SCREENRC="${XDG_CONFIG_HOME:-$HOME/.config}/screen/screenrc"
-export TEXMFHOME="${XDG_CONFIG_HOME:-$HOME/.config}/texmf"
-export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/ripgrep.rc"
+export SCREENRC="$XDG_CONFIG_HOME/screen/screenrc"
+export TEXMFHOME="$XDG_CONFIG_HOME/texmf"
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/ripgrep.rc"
+export GOPATH="$XDG_DATA_HOME/go"
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export PYTHON_VENV_DIR=$XDG_DATA_HOME/python-venvs
 
 # Aliases
 
@@ -37,6 +44,8 @@ alias gpu='git pull'
 alias gs='git status'
 alias ga='git add'
 alias gch='git checkout'
+alias gd='git diff'
+alias gds='git diff --staged'
 
 if id -nzG $USER | grep -qzx "docker"
 then
@@ -44,6 +53,12 @@ then
 else
     alias dc="sudo $(which docker-compose)"
 fi
+
+# remote tcpdump
+function rtcpdump()
+{
+	ssh $1 'tcpdump -i eth0 -w -' | wireshark -i - -k
+}
 
 # General options
 
@@ -129,7 +144,7 @@ unset AGENT_CACHE
 
 AGENT_SOCK=$(gpgconf --list-dirs | grep agent-socket | cut -d : -f 2)
 
-if [[ ! -S $AGENT_SOCK ]];
+if [[ ! -S $AGENT_SOCK ]]
 then
 	gpg-agent --daemon --use-standard-socket &>/dev/null
 fi
@@ -185,31 +200,58 @@ function git_prompt_info()
 	then
 		echo -n "%{$FG[40]%}[\u2714]"
 	else
-
 		echo -n "%{$FG[196]%}[$SYMBOLS]"
 	fi
 
 	echo -n "%{$reset_color%}"
 }
 
+function python_prompt_info()
+{
+	[[ -z "$VIRTUAL_ENV" ]] && return
+	NAME=${${VIRTUAL_ENV%%/env}##*/}
+	echo -n " %{$FG[119]%}[$NAME]%{$reset_color%}"
+}
+
+function pyenv()
+{
+	if [[ -z "$1" ]] then
+		echo "No venv name specified, available:"
+		/usr/bin/ls $PYTHON_VENV_DIR
+		return
+	fi
+	. $PYTHON_VENV_DIR/$1/bin/activate
+}
+
+function newpyenv()
+{
+	if [[ -z "$1" ]] then
+		echo "No venv name specified"
+		return
+	fi
+	TARGET=$PYTHON_VENV_DIR/$1
+	if [[ -d "$TARGET" ]] then
+		echo "Already exists"
+		return
+	fi
+	python -m venv $TARGET
+}
+
 function display_prompt()
 {
+	# if on ssh, "user@host in [path]", just [path] if local
 	echo -n "
 %{$reset_color%}%{$terminfo[bold]%}\
 $([[ -n $SSH_CONNECTION ]] && echo " %{$FG[45]%}%n%{$FG[135]%}@%{$FG[198]%}$SHORT_HOSTNAME %{$reset_color$terminfo[bold]%}in")\
 %{$FG[69]%} ${PWD/#$HOME/~}\
 %{$reset_color%}$(git_prompt_info)\
+%{$reset_color%}$(python_prompt_info)\
 %{$reset_color%}"
 
-	JOB_COUNT=$(jobs | grep -v '(pwd now' | wc -l)
+	# job counter
+	echo -n "%(1j. %{$FG[208]%}[%j job%(2j.s.)].)"
 
-	if [ $JOB_COUNT != 0 ];
-	then
-		echo -n " %{$FG[208]%}[$JOB_COUNT job"
-		[ $JOB_COUNT != 1 ] && echo -n "s"
-		echo -n "]"
-	fi
-
+	# >>> prompt
 	echo -n "
  $([[ $KEYMAP = 'vicmd' ]] && echo $NORMAL_PROMPT || echo $INSERT_PROMPT)\
  %{$reset_color%}"

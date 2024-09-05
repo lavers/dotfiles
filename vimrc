@@ -39,7 +39,7 @@ Plug 'tweekmonster/wstrip.vim'
 
 if has("nvim")
 	Plug 'neovim/nvim-lspconfig'
-	Plug 'hrsh7th/nvim-compe'
+	Plug 'hrsh7th/nvim-cmp', {'branch': 'main'}
 	Plug 'simrat39/rust-tools.nvim'
 	Plug 'simrat39/symbols-outline.nvim'
 	Plug 'ray-x/lsp_signature.nvim'
@@ -95,6 +95,8 @@ syntax on
 silent! colorscheme molokai
 set noswapfile
 let html_no_rendering=1
+
+autocmd FileType sql set colorcolumn=80
 
 " Molokai uses a near-invisible select background for some reason
 
@@ -175,8 +177,8 @@ set pastetoggle=<F12>
 
 " Make j & k move between screen rows instead of lines (on wrapped lines,
 " but not in the quickfix window)
-nnoremap <expr> j (&buftype is# "quickfix" ? "j" : "gj")
-nnoremap <expr> k (&buftype is# "quickfix" ? "k" : "gk")
+nnoremap <expr> j "gj"
+nnoremap <expr> k "gk"
 
 nmap Q <nop>
 

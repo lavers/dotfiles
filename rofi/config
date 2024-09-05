@@ -1,7 +1,7 @@
 configuration
 {
 	combi-modes: "drun,window";
-	modes: "combi,system:/home/sam/bin/rofi-system";
+	modes: "combi,system:/home/sam/.bin/rofi-system";
 
 	matching: "fuzzy";
 	/*
@@ -19,6 +19,7 @@ configuration
 	scroll-method: 1;
 
 	kb-element-next: "";
+	kb-secondary-copy: "";
 	kb-mode-next: "Tab";
 	kb-mode-previous: "Shift+Tab";
 	kb-clear-line: "Control+c";
