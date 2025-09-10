@@ -98,8 +98,9 @@ zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,args --w
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
-autoload -U compinit
+autoload -U compinit bashcompinit
 compinit -d "$CACHE_DIR/compdump-$SHORT_HOSTNAME-$ZSH_VERSION"
+bashcompinit
 
 # auto-escaping of shell chars when typing/pasting a url
 
@@ -220,6 +221,9 @@ function pyenv()
 		/usr/bin/ls $PYTHON_VENV_DIR
 		return
 	fi
+	if [[ -v VIRTUAL_ENV ]] then
+		deactivate
+	fi
 	. $PYTHON_VENV_DIR/$1/bin/activate
 }
 
@@ -235,6 +239,7 @@ function newpyenv()
 		return
 	fi
 	python -m venv $TARGET
+	pyenv $1
 }
 
 function display_prompt()
@@ -319,8 +324,19 @@ try_source_plugin zsh-syntax-highlighting
 try_source_plugin zsh-history-substring-search
 
 # Source machine-specific configuration
+LOCAL_CONFIG=(
+	$CONFIG_DIR/.zshrc.local
+	/usr/share/bash-completion/completions/az
+)
 
-[[ -f $CONFIG_DIR/.zshrc.local ]] && . $CONFIG_DIR/.zshrc.local
+for FILE in $LOCAL_CONFIG;
+do
+	[[ -f $FILE ]] && source $FILE
+done
 
+# load direnv if we have it
+type direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
+
+unset FILE
 unset CACHE_DIR
 unset CONFIG_DIR
